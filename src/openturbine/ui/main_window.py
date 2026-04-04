@@ -117,6 +117,7 @@ class MainWindow:
         self.simulation_running = False
         self.current_results = None
         self.animation_enabled = False
+        self.results_history = []
         
         self.current_view_preset = "one_point_perspective"
         self.display_options = {
@@ -304,6 +305,12 @@ class MainWindow:
         from PySide6.QtWidgets import QMessageBox
         QMessageBox.information(self.window, "New Project", "New project created.\n\nTurbine parameters set to defaults.")
         self.status_label.setText("New project - defaults loaded")
+        self.results_history = []
+        self.results_table.setRowCount(0)
+        if hasattr(self, 'power_plot'):
+            self.power_plot.clear()
+        if hasattr(self, 'rpm_plot'):
+            self.rpm_plot.clear()
     
     def _update_ui_from_simulator(self):
         self.edit_rotor_diameter.setValue(self.simulator.rotor_diameter)
@@ -1647,11 +1654,30 @@ class MainWindow:
             return
         
         result = self.current_results
-        self.results_table.setRowCount(1)
-        self.results_table.setItem(0, 0, QTableWidgetItem(f"{result['wind_speed']:.5f}"))
-        self.results_table.setItem(0, 1, QTableWidgetItem(f"{result['power_mw']:.5f}"))
-        self.results_table.setItem(0, 2, QTableWidgetItem(f"{result['rotor_rpm']:.5f}"))
-        self.results_table.setItem(0, 3, QTableWidgetItem(f"{result['thrust_kn']:.5f}"))
+        self.results_history.append(result)
+        
+        if len(self.results_history) > 100:
+            self.results_history = self.results_history[-100:]
+        
+        self.results_table.setRowCount(len(self.results_history))
+        for i, res in enumerate(self.results_history):
+            self.results_table.setItem(i, 0, QTableWidgetItem(f"{res['wind_speed']:.5f}"))
+            self.results_table.setItem(i, 1, QTableWidgetItem(f"{res['power_mw']:.5f}"))
+            self.results_table.setItem(i, 2, QTableWidgetItem(f"{res['rotor_rpm']:.5f}"))
+            self.results_table.setItem(i, 3, QTableWidgetItem(f"{res['thrust_kn']:.5f}"))
+        
+        if len(self.results_history) >= 2:
+            wind_speeds = [r['wind_speed'] for r in self.results_history]
+            powers = [r['power_mw'] for r in self.results_history]
+            rpms = [r['rotor_rpm'] for r in self.results_history]
+            
+            if hasattr(self, 'power_plot'):
+                self.power_plot.clear()
+                self.power_plot.plot(wind_speeds, powers, pen='b')
+            
+            if hasattr(self, 'rpm_plot'):
+                self.rpm_plot.clear()
+                self.rpm_plot.plot(wind_speeds, rpms, pen='g')
     
     def run(self):
         self.window.show()
