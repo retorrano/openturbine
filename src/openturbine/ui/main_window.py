@@ -305,6 +305,20 @@ class MainWindow:
         QMessageBox.information(self.window, "New Project", "New project created.\n\nTurbine parameters set to defaults.")
         self.status_label.setText("New project - defaults loaded")
     
+    def _update_ui_from_simulator(self):
+        self.edit_rotor_diameter.setValue(self.simulator.rotor_diameter)
+        self.edit_hub_height.setValue(self.simulator.hub_height)
+        self.edit_num_blades.setValue(self.simulator.num_blades)
+        self.edit_rated_power.setValue(self.simulator.rated_power / 1e6)
+        self.edit_blade_length.setValue(self.simulator.blade_length)
+        self.edit_tsr.setValue(self.simulator.tsr_optimal)
+        self.edit_cp_max.setValue(self.simulator.cp_max)
+        self.edit_cut_in_ws.setValue(self.simulator.cut_in_wind_speed)
+        self.edit_rated_ws.setValue(self.simulator.rated_wind_speed)
+        self.edit_cut_out_ws.setValue(self.simulator.cut_out_wind_speed)
+        self.edit_air_density.setValue(self.simulator.air_density)
+        self.edit_turbulence.setValue(self.simulator.turbulence_intensity)
+    
     def _on_open(self):
         from PySide6.QtWidgets import QFileDialog
         file_path, _ = QFileDialog.getOpenFileName(self.window, "Open Configuration", "", "JSON Files (*.json)")
@@ -315,6 +329,7 @@ class MainWindow:
                     config = json.load(f)
                 self.simulator.config = config
                 self.simulator._parse_config()
+                self._update_ui_from_simulator()
                 self.current_file = file_path
                 QMessageBox.information(self.window, "Open", f"Configuration loaded:\n{file_path}")
                 self.status_label.setText(f"Loaded: {file_path}")
@@ -326,6 +341,8 @@ class MainWindow:
         from PySide6.QtWidgets import QFileDialog
         file_path, _ = QFileDialog.getSaveFileName(self.window, "Save Configuration", "", "JSON Files (*.json)")
         if file_path:
+            if not file_path.endswith('.json'):
+                file_path += '.json'
             self._save_to_file(file_path)
             self.current_file = file_path
             QMessageBox.information(self.window, "Save", f"Configuration saved:\n{file_path}")
@@ -334,6 +351,8 @@ class MainWindow:
         from PySide6.QtWidgets import QFileDialog
         file_path, _ = QFileDialog.getSaveFileName(self.window, "Save Configuration As", "", "JSON Files (*.json)")
         if file_path:
+            if not file_path.endswith('.json'):
+                file_path += '.json'
             self._save_to_file(file_path)
             self.current_file = file_path
             QMessageBox.information(self.window, "Save As", f"Configuration saved:\n{file_path}")
@@ -377,6 +396,7 @@ class MainWindow:
                     config = json.load(f)
                 self.simulator.config = config
                 self.simulator._parse_config()
+                self._update_ui_from_simulator()
                 self.current_file = file_path
                 QMessageBox.information(self.window, "Import", f"Configuration imported:\n{file_path}")
                 self.status_label.setText(f"Imported: {file_path}")
