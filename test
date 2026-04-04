@@ -1,0 +1,43 @@
+{
+  "turbine": {
+    "rotor": {
+      "diameter": {
+        "value": 126.0
+      },
+      "number_of_blades": {
+        "value": 3
+      },
+      "rated_power": {
+        "value": 5000000.0
+      }
+    },
+    "hub_height": {
+      "value": 90.0
+    }
+  },
+  "aerodynamics": {
+    "blade_length": {
+      "value": 61.5
+    },
+    "cut_in_wind_speed": {
+      "value": 3.0
+    },
+    "rated_wind_speed": {
+      "value": 11.4
+    },
+    "cut_out_wind_speed": {
+      "value": 25.0
+    },
+    "cp_max": {
+      "value": 0.42
+    },
+    "tsr_optimal": {
+      "value": 7.55
+    }
+  },
+  "environment": {
+    "air_density": {
+      "value": 1.225
+    }
+  }
+}

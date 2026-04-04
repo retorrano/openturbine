@@ -301,27 +301,42 @@ class MainWindow:
         help_menu.addAction(about_action)
     
     def _on_new_project(self):
-        self.status_label.setText("New project - load configuration to begin")
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.information(self.window, "New Project", "New project created.\n\nTurbine parameters set to defaults.")
+        self.status_label.setText("New project - defaults loaded")
     
     def _on_open(self):
         from PySide6.QtWidgets import QFileDialog
         file_path, _ = QFileDialog.getOpenFileName(self.window, "Open Configuration", "", "JSON Files (*.json)")
         if file_path:
-            self.status_label.setText(f"Opened: {file_path}")
+            try:
+                import json
+                with open(file_path, 'r') as f:
+                    config = json.load(f)
+                self.simulator.config = config
+                self.simulator._parse_config()
+                self.current_file = file_path
+                QMessageBox.information(self.window, "Open", f"Configuration loaded:\n{file_path}")
+                self.status_label.setText(f"Loaded: {file_path}")
+            except Exception as e:
+                QMessageBox.warning(self.window, "Error", f"Failed to load:\n{str(e)}")
+                self.status_label.setText(f"Error: {str(e)[:30]}")
     
     def _on_save(self):
-        if hasattr(self, 'current_file') and self.current_file:
-            self._save_to_file(self.current_file)
-        else:
-            self._on_save_as()
-    
-    def _on_save_as(self):
         from PySide6.QtWidgets import QFileDialog
         file_path, _ = QFileDialog.getSaveFileName(self.window, "Save Configuration", "", "JSON Files (*.json)")
         if file_path:
             self._save_to_file(file_path)
             self.current_file = file_path
-            self.status_label.setText(f"Saved: {file_path}")
+            QMessageBox.information(self.window, "Save", f"Configuration saved:\n{file_path}")
+    
+    def _on_save_as(self):
+        from PySide6.QtWidgets import QFileDialog
+        file_path, _ = QFileDialog.getSaveFileName(self.window, "Save Configuration As", "", "JSON Files (*.json)")
+        if file_path:
+            self._save_to_file(file_path)
+            self.current_file = file_path
+            QMessageBox.information(self.window, "Save As", f"Configuration saved:\n{file_path}")
     
     def _save_to_file(self, file_path):
         try:
@@ -363,12 +378,14 @@ class MainWindow:
                 self.simulator.config = config
                 self.simulator._parse_config()
                 self.current_file = file_path
-                self.status_label.setText(f"Loaded: {file_path}")
+                QMessageBox.information(self.window, "Import", f"Configuration imported:\n{file_path}")
+                self.status_label.setText(f"Imported: {file_path}")
             except Exception as e:
-                self.status_label.setText(f"Import error: {str(e)[:50]}")
+                QMessageBox.warning(self.window, "Error", f"Failed to import:\n{str(e)}")
+                self.status_label.setText(f"Error: {str(e)[:30]}")
     
     def _on_export_results(self):
-        from PySide6.QtWidgets import QFileDialog
+        from PySide6.QtWidgets import QFileDialog, QMessageBox
         file_path, _ = QFileDialog.getSaveFileName(self.window, "Export Results", "", "CSV Files (*.csv)")
         if file_path:
             try:
@@ -380,9 +397,11 @@ class MainWindow:
                 with open(file_path, 'w', newline='') as f:
                     writer = csv.writer(f)
                     writer.writerows(data)
+                QMessageBox.information(self.window, "Export", f"Results exported:\n{file_path}")
                 self.status_label.setText(f"Exported: {file_path}")
             except Exception as e:
-                self.status_label.setText(f"Export error: {str(e)[:50]}")
+                QMessageBox.warning(self.window, "Error", f"Failed to export:\n{str(e)}")
+                self.status_label.setText(f"Error: {str(e)[:30]}")
     
     def _on_reset_layout(self):
         self.status_label.setText("Layout reset")
