@@ -1,0 +1,79 @@
+{
+    "name": "IEA 10MW Reference Turbine",
+    "description": "IEA Wind 10MW offshore reference turbine",
+    "version": "1.0",
+    "turbine": {
+        "rotor": {
+            "diameter": {"value": 198.0, "unit": "m"},
+            "hub_height": {"value": 119.0, "unit": "m"},
+            "number_of_blades": {"value": 3},
+            "rated_power": {"value": 10000000.0, "unit": "W"},
+            "orientation": {"value": "upwind"},
+            "cone_angle": {"value": -3.0, "unit": "deg"}
+        },
+        "tower": {
+            "height": {"value": 119.0, "unit": "m"},
+            "diameter_base": {"value": 8.0, "unit": "m"},
+            "diameter_top": {"value": 4.5, "unit": "m"},
+            "material_density": {"value": 8500.0, "unit": "kg/m³"}
+        },
+        "nacelle": {
+            "mass": {"value": 120000.0, "unit": "kg"}
+        },
+        "hub": {
+            "diameter": {"value": 4.0, "unit": "m"},
+            "mass": {"value": 56000.0, "unit": "kg"}
+        }
+    },
+    "aerodynamics": {
+        "blade_length": {"value": 97.0, "unit": "m"},
+        "chord_distribution": [
+            {"position": 0.0, "chord": 4.5},
+            {"position": 0.1, "chord": 5.2},
+            {"position": 0.2, "chord": 5.5},
+            {"position": 0.3, "chord": 5.2},
+            {"position": 0.4, "chord": 4.5},
+            {"position": 0.5, "chord": 3.8},
+            {"position": 0.6, "chord": 3.1},
+            {"position": 0.7, "chord": 2.5},
+            {"position": 0.8, "chord": 1.9},
+            {"position": 0.9, "chord": 1.4},
+            {"position": 1.0, "chord": 0.8}
+        ],
+        "twist_distribution": [
+            {"position": 0.0, "twist": 0.0},
+            {"position": 0.1, "twist": 0.0},
+            {"position": 0.2, "twist": -0.5},
+            {"position": 0.3, "twist": -2.0},
+            {"position": 0.4, "twist": -4.0},
+            {"position": 0.5, "twist": -6.5},
+            {"position": 0.6, "twist": -9.0},
+            {"position": 0.7, "twist": -11.5},
+            {"position": 0.8, "twist": -13.5},
+            {"position": 0.9, "twist": -15.0},
+            {"position": 1.0, "twist": -16.0}
+        ],
+        "cut_in_wind_speed": {"value": 3.0, "unit": "m/s"},
+        "rated_wind_speed": {"value": 10.5, "unit": "m/s"},
+        "cut_out_wind_speed": {"value": 25.0, "unit": "m/s"},
+        "max_rotor_rpm": {"value": 9.6},
+        "cp_max": {"value": 0.45},
+        "tsr_optimal": {"value": 8.0}
+    },
+    "control": {
+        "pitch_kp": {"value": 0.015},
+        "pitch_ki": {"value": 0.0015},
+        "rated_pitch_angle": {"value": 1.5, "unit": "deg"},
+        "torque_type": {"value": "quadratic"},
+        "rated_torque": {"value": 83000.0, "unit": "N·m"},
+        "rated_rpm": {"value": 900.0}
+    },
+    "environment": {
+        "wind_speed_mode": {"value": "weibull"},
+        "mean_wind_speed": {"value": 9.0, "unit": "m/s"},
+        "weibull_shape": {"value": 2.0},
+        "weibull_scale": {"value": 10.0, "unit": "m/s"},
+        "turbulence_intensity": {"value": 0.12},
+        "air_density": {"value": 1.225, "unit": "kg/m³"}
+    }
+}

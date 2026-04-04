@@ -1,0 +1,231 @@
+{
+    "version": "1.0",
+    "name": "Structural Parameters",
+    "description": "Default structural parameters for wind turbine analysis",
+    "blade": {
+        "material": {
+            "value": "glass_fiber_epoxy",
+            "description": "Blade composite material",
+            "options": ["glass_fiber_epoxy", "carbon_fiber_epoxy", "steel", "aluminum"],
+            "ui_group": "Blade Material"
+        },
+        "density": {
+            "value": 3450.0,
+            "unit": "kg/m³",
+            "description": "Blade material density",
+            "min": 1000.0,
+            "max": 5000.0,
+            "ui_group": "Blade Material"
+        },
+        "young_modulus": {
+            "value": 40.0e9,
+            "unit": "Pa",
+            "description": "Blade material Young's modulus (longitudinal)",
+            "min": 10.0e9,
+            "max": 200.0e9,
+            "ui_group": "Blade Material"
+        },
+        "poisson_ratio": {
+            "value": 0.3,
+            "unit": "",
+            "description": "Blade material Poisson's ratio",
+            "min": 0.0,
+            "max": 0.5,
+            "ui_group": "Blade Material"
+        },
+        "first_bending_frequency": {
+            "value": 0.82,
+            "unit": "Hz",
+            "description": "First blade flapwise bending frequency",
+            "min": 0.1,
+            "max": 5.0,
+            "ui_group": "Modal Properties"
+        },
+        "second_bending_frequency": {
+            "value": 2.5,
+            "unit": "Hz",
+            "description": "Second blade flapwise bending frequency",
+            "min": 0.5,
+            "max": 10.0,
+            "ui_group": "Modal Properties"
+        },
+        "edge_frequency": {
+            "value": 1.0,
+            "unit": "Hz",
+            "description": "First blade edgewise bending frequency",
+            "min": 0.1,
+            "max": 10.0,
+            "ui_group": "Modal Properties"
+        }
+    },
+    "tower": {
+        "material": {
+            "value": "steel",
+            "description": "Tower material",
+            "options": ["steel", "concrete", "hybrid"],
+            "ui_group": "Tower Material"
+        },
+        "density": {
+            "value": 8500.0,
+            "unit": "kg/m³",
+            "description": "Tower material density",
+            "min": 1000.0,
+            "max": 10000.0,
+            "ui_group": "Tower Material"
+        },
+        "young_modulus": {
+            "value": 210.0e9,
+            "unit": "Pa",
+            "description": "Tower material Young's modulus",
+            "min": 100.0e9,
+            "max": 300.0e9,
+            "ui_group": "Tower Material"
+        },
+        "yield_strength": {
+            "value": 345.0e6,
+            "unit": "Pa",
+            "description": "Tower material yield strength",
+            "min": 100.0e6,
+            "max": 1000.0e6,
+            "ui_group": "Tower Material"
+        },
+        "first_frequency": {
+            "value": 0.32,
+            "unit": "Hz",
+            "description": "First tower natural frequency (fore-aft/side-side)",
+            "min": 0.1,
+            "max": 1.0,
+            "ui_group": "Modal Properties"
+        },
+        "second_frequency": {
+            "value": 0.85,
+            "unit": "Hz",
+            "description": "Second tower natural frequency",
+            "min": 0.3,
+            "max": 3.0,
+            "ui_group": "Modal Properties"
+        }
+    },
+    "drivetrain": {
+        "gearbox_ratio": {
+            "value": 97.0,
+            "unit": "",
+            "description": "Gearbox ratio (rotor to generator)",
+            "min": 10.0,
+            "max": 200.0,
+            "ui_group": "Drivetrain"
+        },
+        "generator_inertia": {
+            "value": 534.116,
+            "unit": "kg·m²",
+            "description": "Generator rotor inertia",
+            "min": 10.0,
+            "max": 5000.0,
+            "ui_group": "Drivetrain"
+        },
+        "hss_damping": {
+            "value": 0.0,
+            "unit": "N·m·s/rad",
+            "description": "High-speed shaft damping coefficient",
+            "min": 0.0,
+            "max": 1000.0,
+            "ui_group": "Drivetrain"
+        },
+        "lss_damping": {
+            "value": 27.78,
+            "unit": "N·m·s/rad",
+            "description": "Low-speed shaft damping coefficient",
+            "min": 0.0,
+            "max": 1000.0,
+            "ui_group": "Drivetrain"
+        }
+    },
+    "safety": {
+        "safety_factor": {
+            "value": 1.5,
+            "unit": "",
+            "description": "Overall safety factor for structural analysis",
+            "min": 1.0,
+            "max": 5.0,
+            "ui_group": "Safety"
+        },
+        "blade_safety_factor": {
+            "value": 2.0,
+            "unit": "",
+            "description": "Safety factor for blade design",
+            "min": 1.0,
+            "max": 5.0,
+            "ui_group": "Safety"
+        },
+        "tower_safety_factor": {
+            "value": 1.5,
+            "unit": "",
+            "description": "Safety factor for tower design",
+            "min": 1.0,
+            "max": 5.0,
+            "ui_group": "Safety"
+        }
+    },
+    "fatigue": {
+        "sn_curve_slope": {
+            "value": 10.0,
+            "unit": "",
+            "description": "S-N curve slope (m for log-log linear region)",
+            "min": 3.0,
+            "max": 20.0,
+            "ui_group": "Fatigue Analysis"
+        },
+        "sn_curve_intercept": {
+            "value": 1.0e8,
+            "unit": "cycles",
+            "description": "S-N curve intercept (fatigue strength at 10^3 cycles)",
+            "min": 1.0e6,
+            "max": 1.0e10,
+            "ui_group": "Fatigue Analysis"
+        },
+        "damage_equivalent_factor": {
+            "value": 1.0,
+            "unit": "",
+            "description": "Damage equivalent load factor",
+            "min": 0.1,
+            "max": 10.0,
+            "ui_group": "Fatigue Analysis"
+        },
+        "miners_sum_target": {
+            "value": 1.0,
+            "unit": "",
+            "description": "Target Miner's sum for fatigue life",
+            "min": 0.1,
+            "max": 2.0,
+            "ui_group": "Fatigue Analysis"
+        }
+    },
+    "advanced": {
+        "use_aero_elastic": {
+            "value": true,
+            "description": "Include aero-elastic coupling effects",
+            "ui_group": "Advanced"
+        },
+        "use_gravity_loads": {
+            "value": true,
+            "description": "Include gravitational loads",
+            "ui_group": "Advanced"
+        },
+        "blade_peak_deflection_limit": {
+            "value": 4.5,
+            "unit": "m",
+            "description": "Maximum allowable blade tip deflection",
+            "min": 1.0,
+            "max": 20.0,
+            "ui_group": "Advanced"
+        },
+        "tower_peak_deflection_limit": {
+            "value": 0.5,
+            "unit": "m",
+            "description": "Maximum allowable tower top deflection",
+            "min": 0.1,
+            "max": 5.0,
+            "ui_group": "Advanced"
+        }
+    }
+}

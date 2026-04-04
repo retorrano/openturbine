@@ -1,0 +1,272 @@
+{
+    "version": "1.0",
+    "name": "Control System Parameters",
+    "description": "Default control system parameters for wind turbine operation",
+    "pitch_control": {
+        "type": {
+            "value": "collective",
+            "description": "Pitch control type",
+            "options": ["collective", "individual"],
+            "ui_group": "Pitch Control"
+        },
+        "kp": {
+            "value": 0.018,
+            "unit": "rad/rad/s",
+            "description": "Proportional gain for pitch controller",
+            "min": 0.001,
+            "max": 0.1,
+            "ui_group": "Pitch Control Gains"
+        },
+        "ki": {
+            "value": 0.002,
+            "unit": "rad/rad",
+            "description": "Integral gain for pitch controller",
+            "min": 0.0,
+            "max": 0.05,
+            "ui_group": "Pitch Control Gains"
+        },
+        "kd": {
+            "value": 0.0,
+            "unit": "rad·s/rad",
+            "description": "Derivative gain for pitch controller",
+            "min": 0.0,
+            "max": 1.0,
+            "ui_group": "Pitch Control Gains"
+        },
+        "min_pitch_rate": {
+            "value": -8.0,
+            "unit": "deg/s",
+            "description": "Minimum pitch rate (negative for protection)",
+            "min": -15.0,
+            "max": 0.0,
+            "ui_group": "Pitch Limits"
+        },
+        "max_pitch_rate": {
+            "value": 8.0,
+            "unit": "deg/s",
+            "description": "Maximum pitch rate",
+            "min": 0.0,
+            "max": 15.0,
+            "ui_group": "Pitch Limits"
+        },
+        "min_pitch_angle": {
+            "value": 0.0,
+            "unit": "deg",
+            "description": "Minimum blade pitch angle (feathered position)",
+            "min": -5.0,
+            "max": 10.0,
+            "ui_group": "Pitch Limits"
+        },
+        "max_pitch_angle": {
+            "value": 90.0,
+            "unit": "deg",
+            "description": "Maximum blade pitch angle (fine pitch limit)",
+            "min": 70.0,
+            "max": 95.0,
+            "ui_group": "Pitch Limits"
+        },
+        "rated_pitch_angle": {
+            "value": 2.0,
+            "unit": "deg",
+            "description": "Pitch angle at rated operation",
+            "min": 0.0,
+            "max": 15.0,
+            "ui_group": "Pitch Control"
+        }
+    },
+    "yaw_control": {
+        "enabled": {
+            "value": true,
+            "description": "Enable yaw control system",
+            "ui_group": "Yaw Control"
+        },
+        "kp": {
+            "value": 0.001,
+            "unit": "rad/s/rad",
+            "description": "Proportional gain for yaw controller",
+            "min": 0.0001,
+            "max": 0.01,
+            "ui_group": "Yaw Control Gains"
+        },
+        "ki": {
+            "value": 0.0001,
+            "unit": "rad/rad",
+            "description": "Integral gain for yaw controller",
+            "min": 0.0,
+            "max": 0.001,
+            "ui_group": "Yaw Control Gains"
+        },
+        "max_yaw_rate": {
+            "value": 0.5,
+            "unit": "deg/s",
+            "description": "Maximum yaw rate",
+            "min": 0.1,
+            "max": 2.0,
+            "ui_group": "Yaw Limits"
+        },
+        "max_yaw_error": {
+            "value": 8.0,
+            "unit": "deg",
+            "description": "Maximum allowed yaw error before correction",
+            "min": 1.0,
+            "max": 20.0,
+            "ui_group": "Yaw Limits"
+        },
+        "yaw_torque_threshold": {
+            "value": 500.0,
+            "unit": "N·m",
+            "description": "Minimum torque threshold to activate yaw control",
+            "min": 100.0,
+            "max": 5000.0,
+            "ui_group": "Yaw Control"
+        }
+    },
+    "torque_control": {
+        "type": {
+            "value": "quadratic",
+            "description": "Generator torque control strategy",
+            "options": ["constant", "linear", "quadratic", "ipc"],
+            "ui_group": "Torque Control"
+        },
+        "kp": {
+            "value": 50.0,
+            "unit": "N·m·s/rad",
+            "description": "Proportional gain for torque controller",
+            "min": 1.0,
+            "max": 500.0,
+            "ui_group": "Torque Control Gains"
+        },
+        "ki": {
+            "value": 5.0,
+            "unit": "N·m/rad",
+            "description": "Integral gain for torque controller",
+            "min": 0.0,
+            "max": 50.0,
+            "ui_group": "Torque Control Gains"
+        },
+        "rated_torque": {
+            "value": 41000.0,
+            "unit": "N·m",
+            "description": "Rated generator torque",
+            "min": 10000.0,
+            "max": 200000.0,
+            "ui_group": "Torque Control"
+        },
+        "rated_rpm": {
+            "value": 1173.7,
+            "unit": "rpm",
+            "description": "Generator rated speed",
+            "min": 500.0,
+            "max": 3000.0,
+            "ui_group": "Torque Control"
+        },
+        "cut_in_rpm": {
+            "value": 700.0,
+            "unit": "rpm",
+            "description": "Generator speed at which torque control starts",
+            "min": 300.0,
+            "max": 1000.0,
+            "ui_group": "Torque Control"
+        }
+    },
+    "operation_modes": {
+        "region1_enable": {
+            "value": true,
+            "description": "Enable Region 1 (below cut-in, idling)",
+            "ui_group": "Operation Regions"
+        },
+        "region2_start": {
+            "value": 3.0,
+            "unit": "m/s",
+            "description": "Region 2 start wind speed (optimal power extraction)",
+            "min": 2.0,
+            "max": 5.0,
+            "ui_group": "Operation Regions"
+        },
+        "region2_5_start": {
+            "value": 11.4,
+            "unit": "m/s",
+            "description": "Region 2.5 start wind speed (transition to rated)",
+            "min": 8.0,
+            "max": 15.0,
+            "ui_group": "Operation Regions"
+        },
+        "region3_start": {
+            "value": 25.0,
+            "unit": "m/s",
+            "description": "Region 3 start wind speed (shutdown)",
+            "min": 20.0,
+            "max": 30.0,
+            "ui_group": "Operation Regions"
+        },
+        "parking_mode": {
+            "value": "feathered",
+            "description": "Parking mode when stopped",
+            "options": ["feathered", "active", "static"],
+            "ui_group": "Operation Regions"
+        }
+    },
+    "protection": {
+        "emergency_pitch_rate": {
+            "value": 15.0,
+            "unit": "deg/s",
+            "description": "Emergency pitch rate for overspeed protection",
+            "min": 5.0,
+            "max": 30.0,
+            "ui_group": "Protection"
+        },
+        "overspeed_threshold": {
+            "value": 1.1,
+            "unit": "",
+            "description": "Overspeed threshold as fraction of max RPM",
+            "min": 1.0,
+            "max": 1.3,
+            "ui_group": "Protection"
+        },
+        "underspeed_threshold": {
+            "value": 0.1,
+            "unit": "",
+            "description": "Underspeed threshold as fraction of cut-in RPM",
+            "min": 0.0,
+            "max": 0.5,
+            "ui_group": "Protection"
+        },
+        "grid_fault_timeout": {
+            "value": 5.0,
+            "unit": "s",
+            "description": "Time before triggering grid fault response",
+            "min": 0.1,
+            "max": 30.0,
+            "ui_group": "Protection"
+        }
+    },
+    "advanced": {
+        "individual_pitch_control": {
+            "value": false,
+            "description": "Enable individual pitch control (IPC) instead of collective",
+            "ui_group": "Advanced"
+        },
+        "pitch_compensation": {
+            "value": "velocity",
+            "description": "Type of pitch compensation for yaw misalignment",
+            "options": ["none", "velocity", "tilt", "both"],
+            "ui_group": "Advanced"
+        },
+        "torque_filter_freq": {
+            "value": 0.4,
+            "unit": "Hz",
+            "description": "Low-pass filter cutoff frequency for torque signal",
+            "min": 0.1,
+            "max": 2.0,
+            "ui_group": "Advanced"
+        },
+        "pitch_filter_freq": {
+            "value": 0.7,
+            "unit": "Hz",
+            "description": "Low-pass filter cutoff frequency for pitch signal",
+            "min": 0.1,
+            "max": 5.0,
+            "ui_group": "Advanced"
+        }
+    }
+}
