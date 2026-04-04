@@ -154,32 +154,39 @@ class MainWindow:
         
         new_action = QAction("&New Project", self.window)
         new_action.setShortcut(QKeySequence.New)
+        new_action.triggered.connect(self._on_new_project)
         file_menu.addAction(new_action)
         
         open_action = QAction("&Open...", self.window)
         open_action.setShortcut(QKeySequence.Open)
+        open_action.triggered.connect(self._on_open)
         file_menu.addAction(open_action)
         
         save_action = QAction("&Save", self.window)
         save_action.setShortcut(QKeySequence.Save)
+        save_action.triggered.connect(self._on_save)
         file_menu.addAction(save_action)
         
         save_as_action = QAction("Save &As...", self.window)
         save_as_action.setShortcut(QKeySequence.SaveAs)
+        save_as_action.triggered.connect(self._on_save_as)
         file_menu.addAction(save_as_action)
         
         file_menu.addSeparator()
         
         import_action = QAction("&Import Configuration...", self.window)
+        import_action.triggered.connect(self._on_import_config)
         file_menu.addAction(import_action)
         
         export_action = QAction("&Export Results...", self.window)
+        export_action.triggered.connect(self._on_export_results)
         file_menu.addAction(export_action)
         
         file_menu.addSeparator()
         
         exit_action = QAction("E&xit", self.window)
         exit_action.setShortcut(QKeySequence.Quit)
+        exit_action.triggered.connect(self.window.close)
         file_menu.addAction(exit_action)
         
         edit_menu = menubar.addMenu("&Edit")
@@ -195,26 +202,31 @@ class MainWindow:
         edit_menu.addSeparator()
         
         preferences_action = QAction("&Preferences...", self.window)
+        preferences_action.triggered.connect(self._on_preferences)
         edit_menu.addAction(preferences_action)
         
         simulation_menu = menubar.addMenu("&Simulation")
         
         run_action = QAction("&Run Simulation", self.window)
         run_action.setShortcut("F5")
+        run_action.triggered.connect(self._on_run_clicked)
         simulation_menu.addAction(run_action)
         
         stop_action = QAction("&Stop Simulation", self.window)
         stop_action.setShortcut("F6")
+        stop_action.triggered.connect(self._on_stop_clicked)
         simulation_menu.addAction(stop_action)
         
         simulation_menu.addSeparator()
         
         parametric_action = QAction("&Parametric Sweep...", self.window)
+        parametric_action.triggered.connect(self._on_parametric_sweep)
         simulation_menu.addAction(parametric_action)
         
         view_menu = menubar.addMenu("&View")
         
         reset_layout_action = QAction("&Reset Layout", self.window)
+        reset_layout_action.triggered.connect(self._on_reset_layout)
         view_menu.addAction(reset_layout_action)
         
         view_menu.addSeparator()
@@ -222,10 +234,12 @@ class MainWindow:
         self.view_3d_action = QAction("&3D View", self.window)
         self.view_3d_action.setCheckable(True)
         self.view_3d_action.setChecked(True)
+        self.view_3d_action.toggled.connect(self._on_toggle_3d_view)
         view_menu.addAction(self.view_3d_action)
         
         self.view_2d_action = QAction("&2D Schematic", self.window)
         self.view_2d_action.setCheckable(True)
+        self.view_2d_action.toggled.connect(self._on_toggle_2d_view)
         view_menu.addAction(self.view_2d_action)
         
         view_menu.addSeparator()
@@ -247,74 +261,44 @@ class MainWindow:
         reset_view_action = QAction("&Reset View", self.window)
         reset_view_action.setShortcut("R")
         reset_view_action.setToolTip("Reset to default view (R)")
+        reset_view_action.triggered.connect(self._on_reset_3d_view)
         view_menu.addAction(reset_view_action)
         
         charts_action = QAction("&Charts Dashboard", self.window)
         charts_action.setCheckable(True)
         charts_action.setChecked(True)
+        charts_action.toggled.connect(self._on_toggle_charts)
         view_menu.addAction(charts_action)
         
         tools_menu = menubar.addMenu("&Tools")
         
         airfoil_action = QAction("&Airfoil Editor...", self.window)
+        airfoil_action.triggered.connect(self._on_airfoil_editor)
         tools_menu.addAction(airfoil_action)
         
         wake_action = QAction("&Wake Analysis...", self.window)
+        wake_action.triggered.connect(self._on_wake_analysis)
         tools_menu.addAction(wake_action)
         
         tools_menu.addSeparator()
         
         compare_action = QAction("&Compare Designs...", self.window)
+        compare_action.triggered.connect(self._on_compare_designs)
         tools_menu.addAction(compare_action)
         
         help_menu = menubar.addMenu("&Help")
         
         tutorial_action = QAction("&Tutorial...", self.window)
+        tutorial_action.triggered.connect(self._on_tutorial)
         help_menu.addAction(tutorial_action)
         
         documentation_action = QAction("&Documentation...", self.window)
+        documentation_action.triggered.connect(self._on_documentation)
         help_menu.addAction(documentation_action)
         
         about_action = QAction("&About OpenTurbine", self.window)
         about_action.triggered.connect(self._on_about)
         help_menu.addAction(about_action)
-        
-        self._connect_menu_actions()
-    
-    def _connect_menu_actions(self):
-        for action in self.window.findChildren(QAction):
-            if action.text() == "E&xit":
-                action.triggered.connect(self.window.close)
-            elif action.text() == "&New Project":
-                action.triggered.connect(self._on_new_project)
-            elif action.text() == "&Open...":
-                action.triggered.connect(self._on_open)
-            elif action.text() == "&Save":
-                action.triggered.connect(self._on_save)
-            elif action.text() == "Save &As...":
-                action.triggered.connect(self._on_save_as)
-            elif action.text() == "&Import Configuration...":
-                action.triggered.connect(self._on_import_config)
-            elif action.text() == "&Export Results...":
-                action.triggered.connect(self._on_export_results)
-            elif action.text() == "&Reset Layout":
-                action.triggered.connect(self._on_reset_layout)
-            elif action.text() == "&3D View":
-                action.toggled.connect(self._on_toggle_3d_view)
-            elif action.text() == "&2D Schematic":
-                action.toggled.connect(self._on_toggle_2d_view)
-            elif action.text() == "&Reset View":
-                action.triggered.connect(self._on_reset_3d_view)
-            elif action.text() == "&Charts Dashboard":
-                action.toggled.connect(self._on_toggle_charts)
-            elif action.text() == "&Tutorial...":
-                action.triggered.connect(self._on_tutorial)
-            elif action.text() == "&Documentation...":
-                action.triggered.connect(self._on_documentation)
-            elif action.text() == "&Run Simulation":
-                action.triggered.connect(self._on_run_clicked)
-            elif action.text() == "&Stop Simulation":
-                action.triggered.connect(self._on_stop_clicked)
     
     def _on_new_project(self):
         self.status_label.setText("New project - load configuration to begin")
@@ -348,6 +332,26 @@ class MainWindow:
     
     def _on_reset_layout(self):
         self.status_label.setText("Layout reset")
+    
+    def _on_preferences(self):
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.information(self.window, "Preferences", "Preferences dialog - coming soon")
+    
+    def _on_parametric_sweep(self):
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.information(self.window, "Parametric Sweep", "Parametric sweep - coming soon")
+    
+    def _on_airfoil_editor(self):
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.information(self.window, "Airfoil Editor", "Airfoil editor - coming soon")
+    
+    def _on_wake_analysis(self):
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.information(self.window, "Wake Analysis", "Wake analysis - coming soon")
+    
+    def _on_compare_designs(self):
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.information(self.window, "Compare Designs", "Design comparison - coming soon")
     
     def _on_toggle_3d_view(self, checked):
         if hasattr(self, 'viewport_3d'):
