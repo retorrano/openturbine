@@ -67,7 +67,7 @@ build_linux() {
     # Install system dependencies
     echo "[1/6] Installing system dependencies..."
     if [ "$PKG_MGR" = "dnf" ]; then
-        sudo dnf groupinstall -y "Development Tools"
+        sudo dnf install -y @development-tools
         sudo dnf install -y mesa-libGL glib2 libSM libXrender libXext libXrandr libXcomposite libXdamage libxkbcommon atk at-spi2-atk cups-libs libdrm dbus-libs at-spi2-core fontconfig freetype pixman libxcb gcc gcc-c++ python3 python3-pip python3-virtualenv
     elif [ "$PKG_MGR" = "apt-get" ]; then
         sudo apt-get update
