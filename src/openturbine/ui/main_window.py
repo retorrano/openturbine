@@ -912,8 +912,11 @@ class MainWindow:
     
     def _create_3d_viewport(self) -> QWidget:
         try:
+            import os
+            os.environ['QT_QPA_PLATFORM'] = 'offscreen'
             import vtk
-            from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+            from vtkmodules.vtkRenderingOpenGL2 import *
+            from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
         except Exception as e:
             widget = QFrame()
             layout = QVBoxLayout(widget)
