@@ -1,0 +1,61 @@
+OpenTurbine v0.1.0 Release Notes
+
+We are pleased to announce the first release of OpenTurbine, an open-source wind turbine simulation application.
+
+Features
+
+3D Visualization
+- Interactive 3D turbine model with tower, hub, nacelle, and rotating blades
+- Multiple camera view presets: One-Point Perspective, Isometric, Front, Side, Top, Birds Eye, and Worms Eye
+- Smooth blade rotation animation synchronized with wind speed
+- Adjustable visualization settings for grid, ground plane, and shadows
+
+Parameter Configuration
+- Turbine parameters: rotor diameter, hub height, number of blades, rated power
+- Aerodynamics: blade length, tip speed ratio (TSR), max power coefficient (Cp), cut-in/out wind speeds
+- Environment: air density, turbulence intensity, wind shear exponent
+- Structural: blade density, Youngs modulus, tower density, safety factor
+- Control: pitch and torque controller gains
+
+Simulation
+- Steady-state power calculation based on wind speed
+- Rotor RPM calculation with TSR control
+- Thrust force computation
+- Real-time parameter updates with live visualization
+
+User Interface
+- Tabbed parameter editing panels
+- Wind speed slider for live simulation control
+- Run/Stop simulation controls
+- Charts dashboard showing power, RPM, and thrust curves
+- File operations: New, Open, Save, Save As, Import, Export
+- Export results to CSV format
+
+Installation
+
+Download the pre-built binary for your platform from the Releases page:
+- Linux (x86_64)
+- macOS (x86_64, Apple Silicon)
+- Windows (x86_64)
+
+Or install via pip:
+    pip install openturbine
+
+Requirements
+
+- Python 3.9+
+- VTK 9.0+
+- PySide6
+- NumPy
+- Matplotlib (optional, for charts)
+- PyQtGraph (optional, for charts)
+
+License
+
+OpenTurbine is released under the MIT License. See LICENSE file for details.
+
+Credits
+
+Developed by Romano E. Torrano.
+
+Thank you for trying OpenTurbine!
