@@ -1,84 +1,61 @@
 #!/bin/bash
-# Build script for OpenTurbine binaries
-# Usage: ./build_binary.sh [version] [platform]
-#   platform: linux, windows, macos, or all (default: linux)
+# Build script for OpenTurbine - Auto-detects OS
+# Usage: ./build_binary.sh [version]
 
 set -e
 
 VERSION=${1:-"0.1.0"}
-PLATFORM=${2:-"linux"}
 
-echo "Building OpenTurbine v${VERSION} binaries for $PLATFORM..."
+echo "============================================"
+echo "OpenTurbine Build Script"
+echo "============================================"
+echo "Version: $VERSION"
+echo ""
 
-# Check if virtual environment exists
-if [ ! -d "venv" ]; then
-    echo "Creating virtual environment..."
-    python3 -m venv venv
-fi
-
-source venv/bin/activate
-
-# Install dependencies
-echo "Installing dependencies..."
-pip install --upgrade pip
-pip install -r requirements.txt
-pip install pyinstaller PySide6 vtk numpy scipy matplotlib
-
-mkdir -p dist
-
-build_linux() {
-    echo "Building Linux binary..."
-    pyinstaller --onefile --windowed \
-        --name "openturbine-${VERSION}-linux" \
-        --add-data "configs:openturbine/configs" \
-        --distpath dist \
-        src/openturbine/ui/main_window.py
-    echo "Linux binary: dist/openturbine-${VERSION}-linux"
-}
-
-build_windows() {
-    echo "Building Windows binary..."
-    pyinstaller --onefile --windowed \
-        --name "openturbine-${VERSION}-windows.exe" \
-        --add-data "configs;openturbine/configs" \
-        --distpath dist \
-        src/openturbine/ui/main_window.py
-    echo "Windows binary: dist/openturbine-${VERSION}-windows.exe"
-}
-
-build_macos() {
-    echo "Building macOS binary..."
-    pyinstaller --onefile --windowed \
-        --name "openturbine-${VERSION}-macos" \
-        --add-data "configs:openturbine/configs" \
-        --distpath dist \
-        src/openturbine/ui/main_window.py
-    echo "macOS binary: dist/openturbine-${VERSION}-macos"
-}
-
-case "$PLATFORM" in
-    linux)
-        build_linux
+# Detect operating system
+OS_TYPE=""
+case "$(uname -s)" in
+    Linux*)
+        if grep -qEi "Microsoft|WSL" /proc/version 2>/dev/null; then
+            OS_TYPE="linux-wsl"
+            echo "Detected: Windows Subsystem for Linux (WSL)"
+        else
+            OS_TYPE="linux"
+            echo "Detected: Linux"
+        fi
         ;;
-    windows)
-        build_windows
+    Darwin*)
+        OS_TYPE="macos"
+        echo "Detected: macOS"
         ;;
-    macos)
-        build_macos
-        ;;
-    all)
-        build_linux
-        build_windows
-        build_macos
+    CYGWIN*|MINGW*|MSYS*)
+        OS_TYPE="windows"
+        echo "Detected: Windows (Git Bash/MinGW)"
         ;;
     *)
-        echo "Unknown platform: $PLATFORM"
-        echo "Usage: ./build_binary.sh [version] [platform]"
-        echo "  platform: linux, windows, macos, or all"
+        echo "Unknown OS: $(uname -s)"
         exit 1
         ;;
 esac
 
 echo ""
-echo "Build complete!"
-ls -la dist/
+
+# Run the appropriate build script
+case "$OS_TYPE" in
+    linux)
+        echo "Running Linux build..."
+        ./build_linux.sh "$VERSION"
+        ;;
+    linux-wsl)
+        echo "Running Windows (WSL) build..."
+        ./build_windows.sh "$VERSION"
+        ;;
+    windows)
+        echo "Running Windows build..."
+        ./build_windows.sh "$VERSION"
+        ;;
+    macos)
+        echo "Running macOS build..."
+        ./build_macos.sh "$VERSION"
+        ;;
+esac

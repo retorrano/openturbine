@@ -1,5 +1,6 @@
 #!/bin/bash
-# Build script for OpenTurbine on Windows (using WSL or MinGW)
+# Build script for OpenTurbine on Windows
+# Supports: Native Windows, WSL (Windows Subsystem for Linux), Git Bash, MinGW
 # Usage: ./build_windows.sh [version]
 
 set -e
@@ -9,50 +10,72 @@ echo "============================================"
 echo "Building OpenTurbine v${VERSION} for Windows"
 echo "============================================"
 
-# Check if running on Windows (WSL or native Windows with Git Bash)
+# Detect environment
 echo "[1/6] Detecting build environment..."
 
 IS_WSL=false
-IS_WINDOWS=false
+IS_MINGW=false
+IS_NATIVE=false
 
 if grep -qEi "Microsoft|WSL" /proc/version 2>/dev/null; then
     IS_WSL=true
-    echo "Detected: Windows Subsystem for Linux (WSL)"
+    echo "Environment: Windows Subsystem for Linux (WSL)"
 elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
-    IS_WINDOWS=true
-    echo "Detected: Git Bash / MinGW on Windows"
+    IS_MINGW=true
+    echo "Environment: Git Bash / MinGW"
+elif [[ "$OSTYPE" == "win32" || -n "$WINDIR" ]]; then
+    IS_NATIVE=true
+    echo "Environment: Native Windows"
 else
-    echo "Detected: Linux (cross-compile for Windows)"
-    echo "Note: For proper Windows build, run this script on Windows"
+    echo "Environment: Unknown - assuming Windows"
 fi
 
 # Check for Python
 echo "[2/6] Checking Python installation..."
-if ! command -v python3 &> /dev/null; then
-    echo "Python3 not found!"
+PYTHON_CMD=""
+
+if command -v python3 &> /dev/null; then
+    PYTHON_CMD="python3"
+elif command -v python &> /dev/null; then
+    PYTHON_CMD="python"
+elif [ -n "$PYTHON_PATH" ]; then
+    PYTHON_CMD="$PYTHON_PATH"
+elif [ -n "$LOCALAPPDATA" ] && [ -d "$LOCALAPPDATA/Programs/Python" ]; then
+    PYTHON_CMD="$LOCALAPPDATA/Programs/Python/Python311/python.exe"
+elif [ -n "$PROGRAMFILES" ] && [ -d "$PROGRAMFILES/Python" ]; then
+    PYTHON_CMD="$PROGRAMFILES/Python/Python311/python.exe"
+fi
+
+if [ -z "$PYTHON_CMD" ]; then
+    echo ""
+    echo "ERROR: Python not found!"
     echo ""
     echo "Please install Python 3.9+ from: https://www.python.org/downloads/"
-    echo "Make sure to check 'Add Python to PATH' during installation."
+    echo ""
+    echo "During installation, make sure to:"
+    echo "  1. Check 'Add Python to PATH'"
+    echo "  2. Check 'Install pip'"
+    echo ""
     exit 1
 fi
 
-PYTHON_CMD="python3"
-if command -v python &> /dev/null; then
-    PYTHON_CMD="python"
-fi
-
+echo "Using Python: $PYTHON_CMD"
 $PYTHON_CMD --version
 
 # Create virtual environment
 echo "[3/6] Setting up Python virtual environment..."
-if [ ! -d "venv" ]; then
-    $PYTHON_CMD -m venv venv
-fi
 
-if [ "$IS_WINDOWS" = true ]; then
-    source venv/Scripts/activate
+if [ "$IS_WSL" = true ] || [ "$IS_MINGW" = true ]; then
+    if [ ! -d "venv" ]; then
+        $PYTHON_CMD -m venv venv
+    fi
+    source venv/Scripts/activate 2>/dev/null || source venv/bin/activate
 else
-    source venv/bin/activate
+    # Native Windows
+    if [ ! -d "venv" ]; then
+        $PYTHON_CMD -m venv venv
+    fi
+    source venv/Scripts/activate
 fi
 
 # Upgrade pip
@@ -60,6 +83,7 @@ echo "[4/6] Installing Python dependencies..."
 pip install --upgrade pip
 
 # Install all required packages
+echo "[5/6] Installing required packages (this may take a while)..."
 pip install \
     numpy \
     scipy \
@@ -75,26 +99,22 @@ pip install \
 pip install -e .
 
 # Build the binary
-echo "[5/6] Building Windows binary..."
+echo "[6/6] Building Windows binary..."
 mkdir -p dist
 
-if [ "$IS_WINDOWS" = true ]; then
-    pyinstaller --onefile --windowed \
-        --name "openturbine-${VERSION}-windows.exe" \
-        --add-data "configs;openturbine/configs" \
-        --distpath dist \
-        src/openturbine/ui/main_window.py
+# Determine path separator
+if [ "$IS_WSL" = true ] || [ "$IS_MINGW" = true ]; then
+    PATH_SEP=";"
 else
-    # For WSL or Linux cross-compile
-    pip install pywin32-ctypes 2>/dev/null || true
-    pyinstaller --onefile --windowed \
-        --name "openturbine-${VERSION}-windows.exe" \
-        --add-data "configs;openturbine/configs" \
-        --distpath dist \
-        src/openturbine/ui/main_window.py
+    PATH_SEP=";"
 fi
 
-echo "[6/6] Verifying build..."
+pyinstaller --onefile --windowed \
+    --name "openturbine-${VERSION}-windows.exe" \
+    --add-data "configs;openturbine/configs" \
+    --distpath dist \
+    src/openturbine/ui/main_window.py
+
 echo ""
 echo "============================================"
 echo "Build complete!"
@@ -103,8 +123,9 @@ echo "Output: dist/openturbine-${VERSION}-windows.exe"
 ls -lh dist/
 
 echo ""
+echo "Note: On first run, Windows may show a SmartScreen warning."
+echo "Click 'More info' and 'Run anyway' to proceed."
+echo ""
 echo "To create an installer, consider using:"
 echo "  - NSIS: https://nsis.sourceforge.io/"
 echo "  - Inno Setup: https://jrsoftware.org/isinfo.php"
-echo ""
-echo "Or simply share the .exe file directly."
