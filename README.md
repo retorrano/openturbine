@@ -2,6 +2,8 @@
 
 **Open-source wind turbine simulation software for design verification and analysis**
 
+*Author: Romano E. Torrano*
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Build Status](https://github.com/openturbine/openturbine/actions/workflows/ci.yml/badge.svg)](https://github.com/openturbine/openturbine/actions)
 [![Documentation](https://img.shields.io/badge/Documentation-latest-brightgreen.svg)](https://openturbine.readthedocs.io/)
@@ -174,17 +176,17 @@ If you use OpenTurbine in your research, please cite:
 ```bibtex
 @software{openturbine,
   title = {OpenTurbine: Open-Source Wind Turbine Simulation Software},
-  author = {OpenTurbine Contributors},
+  author = {Romano E. Torrano},
   year = {2026},
-  url = {https://github.com/openturbine/openturbine}
+  url = {https://github.com/retorrano/openturbine}
 }
 ```
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/openturbine/openturbine/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/openturbine/openturbine/discussions)
-- **Email**: info@openturbine.org
+- **Issues**: [GitHub Issues](https://github.com/retorrano/openturbine/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/retorrano/openturbine/discussions)
+- **Email**: romano.torrano@gmail.com
 
 ## Acknowledgments
 

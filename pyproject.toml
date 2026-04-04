@@ -9,7 +9,7 @@ description = "Open-source wind turbine simulation software"
 readme = "README.md"
 license = {text = "Apache-2.0"}
 authors = [
-    {name = "OpenTurbine Contributors", email = "info@openturbine.org"}
+    {name = "Romano E. Torrano", email = "romano.torrano@gmail.com"}
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -38,10 +38,10 @@ full = ["PySide6>=6.4.0", "vtk>=9.2.0", "pyvista>=0.37.0"]
 dev = ["pytest>=7.0.0", "pytest-cov>=3.0.0", "black>=22.0.0", "flake8>=4.0.0", "mypy>=0.950"]
 
 [project.urls]
-Homepage = "https://github.com/openturbine/openturbine"
+Homepage = "https://github.com/retorrano/openturbine"
 Documentation = "https://openturbine.readthedocs.io"
-Repository = "https://github.com/openturbine/openturbine"
-Issues = "https://github.com/openturbine/openturbine/issues"
+Repository = "https://github.com/retorrano/openturbine"
+Issues = "https://github.com/retorrano/openturbine/issues"
 
 [tool.black]
 line-length = 100
