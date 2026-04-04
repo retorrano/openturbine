@@ -1,0 +1,132 @@
+name: Build Release Binaries
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 0.1.0)'
+        required: true
+        default: '0.1.0'
+  release:
+    types: [created]
+
+env:
+  VERSION: ${{ inputs.version || github.event.release.tag_name }}
+
+jobs:
+  build-linux:
+    name: Build Linux Binary
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-glx libglib2.0-0 libsm6 libxrender1 libxext6 libgomp1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install PyInstaller
+        run: |
+          pip install pyinstaller
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install PySide6 vtk
+
+      - name: Build executable
+        run: |
+          pyinstaller --onefile --windowed \
+            --name openturbine-${{ env.VERSION }}-linux \
+            --add-data "src/openturbine/configs:openturbine/configs" \
+            src/openturbine/ui/main_window.py
+
+      - name: Upload Linux binary
+        uses: actions/upload-release-asset@v2
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: dist/openturbine-${{ env.VERSION }}-linux
+          asset_name: openturbine-${{ env.VERSION }}-linux
+          asset_content_type: application/octet-stream
+
+  build-windows:
+    name: Build Windows Binary
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller PySide6 vtk
+
+      - name: Build executable
+        run: |
+          pyinstaller --onefile --windowed `
+            --name openturbine-${{ env.VERSION }}-windows.exe `
+            --add-data "src/openturbine/configs;openturbine/configs" `
+            src/openturbine/ui/main_window.py
+
+      - name: Upload Windows binary
+        uses: actions/upload-release-asset@v2
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: dist/openturbine-${{ env.VERSION }}-windows.exe
+          asset_name: openturbine-${{ env.VERSION }}-windows.exe
+          asset_content_type: application/x-msdownload
+
+  build-macos:
+    name: Build macOS Binary
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller PySide6 vtk
+
+      - name: Build executable
+        run: |
+          pyinstaller --onefile --windowed \
+            --name openturbine-${{ env.VERSION }}-macos \
+            --add-data "src/openturbine/configs:openturbine/configs" \
+            src/openturbine/ui/main_window.py
+
+      - name: Upload macOS binary
+        uses: actions/upload-release-asset@v2
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: dist/openturbine-${{ env.VERSION }}-macos
+          asset_name: openturbine-${{ env.VERSION }}-macos
+          asset_content_type: application/octet-stream
+
+  create-release:
+    needs: [build-linux, build-windows, build-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        if: github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ inputs.version }}
+          release_name: OpenTurbine ${{ inputs.version }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

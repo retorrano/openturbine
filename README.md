@@ -36,7 +36,19 @@ OpenTurbine is a comprehensive, open-source desktop application for wind turbine
 
 ## Installation
 
-### Prerequisites
+### Download Binaries (Recommended)
+
+Pre-built binaries are available for download from the [Releases](https://github.com/retorrano/openturbine/releases) page:
+
+| Platform | File | Description |
+|----------|------|-------------|
+| Linux | `openturbine-X.X.X-linux` | Standalone Linux executable |
+| Windows | `openturbine-X.X.X-windows.exe` | Windows installer |
+| macOS | `openturbine-X.X.X-macos` | macOS application |
+
+Simply download and run the appropriate binary for your platform.
+
+### Prerequisites (for source installation)
 
 - Python 3.9+
 - CMake 3.20+
@@ -44,11 +56,11 @@ OpenTurbine is a comprehensive, open-source desktop application for wind turbine
 - Qt 6.4+ (for UI)
 - VTK 9.x (for 3D visualization)
 
-### Quick Install
+### Quick Install from Source
 
 ```bash
 # Clone the repository
-git clone https://github.com/openturbine/openturbine.git
+git clone https://github.com/retorrano/openturbine.git
 cd openturbine
 
 # Install Python dependencies
@@ -56,6 +68,31 @@ pip install -r requirements.txt
 
 # Install in development mode
 pip install -e .
+```
+
+### Building Binaries from Source
+
+```bash
+# Build standalone binaries (requires PyInstaller)
+./build_binary.sh 0.1.0
+
+# This creates binaries in the dist/ folder
+```
+
+### Building from Source with CMake
+
+```bash
+# Create build directory
+mkdir build && cd build
+
+# Configure with CMake
+cmake .. -DBUILD_TESTS=ON -DBUILD_PYTHON_BINDINGS=ON
+
+# Build
+cmake --build . --config Release
+
+# Install
+cmake --install .
 ```
 
 ### Building from Source
