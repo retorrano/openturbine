@@ -1539,8 +1539,6 @@ class MainWindow:
     
     def _create_connections(self):
         self.wind_speed_slider.valueChanged.connect(self._on_wind_speed_changed)
-        self.run_btn.clicked.connect(self._on_run_clicked)
-        self.stop_btn.clicked.connect(self._on_stop_clicked)
         self.animation_btn.toggled.connect(self._on_animation_toggled)
         
         if hasattr(self, 'view_preset_combo'):
