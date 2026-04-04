@@ -1,3 +1,3 @@
 __version__ = "0.1.0"
-__author__ = "OpenTurbine Contributors"
+__author__ = "Romano E. Torrano"
 __license__ = "Apache-2.0"
