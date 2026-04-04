@@ -915,7 +915,6 @@ class MainWindow:
             import os
             os.environ['QT_QPA_PLATFORM'] = 'offscreen'
             import vtk
-            from vtkmodules.vtkRenderingOpenGL2 import *
             from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
         except Exception as e:
             widget = QFrame()
