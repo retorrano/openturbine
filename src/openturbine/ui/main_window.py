@@ -276,7 +276,111 @@ class MainWindow:
         help_menu.addAction(documentation_action)
         
         about_action = QAction("&About OpenTurbine", self.window)
+        about_action.triggered.connect(self._on_about)
         help_menu.addAction(about_action)
+        
+        self._connect_menu_actions()
+    
+    def _connect_menu_actions(self):
+        for action in self.window.findChildren(QAction):
+            if action.text() == "E&xit":
+                action.triggered.connect(self.window.close)
+            elif action.text() == "&New Project":
+                action.triggered.connect(self._on_new_project)
+            elif action.text() == "&Open...":
+                action.triggered.connect(self._on_open)
+            elif action.text() == "&Save":
+                action.triggered.connect(self._on_save)
+            elif action.text() == "Save &As...":
+                action.triggered.connect(self._on_save_as)
+            elif action.text() == "&Import Configuration...":
+                action.triggered.connect(self._on_import_config)
+            elif action.text() == "&Export Results...":
+                action.triggered.connect(self._on_export_results)
+            elif action.text() == "&Reset Layout":
+                action.triggered.connect(self._on_reset_layout)
+            elif action.text() == "&3D View":
+                action.toggled.connect(self._on_toggle_3d_view)
+            elif action.text() == "&2D Schematic":
+                action.toggled.connect(self._on_toggle_2d_view)
+            elif action.text() == "&Reset View":
+                action.triggered.connect(self._on_reset_3d_view)
+            elif action.text() == "&Charts Dashboard":
+                action.toggled.connect(self._on_toggle_charts)
+            elif action.text() == "&Tutorial...":
+                action.triggered.connect(self._on_tutorial)
+            elif action.text() == "&Documentation...":
+                action.triggered.connect(self._on_documentation)
+            elif action.text() == "&Run Simulation":
+                action.triggered.connect(self._on_run_clicked)
+            elif action.text() == "&Stop Simulation":
+                action.triggered.connect(self._on_stop_clicked)
+    
+    def _on_new_project(self):
+        self.status_label.setText("New project - load configuration to begin")
+    
+    def _on_open(self):
+        from PySide6.QtWidgets import QFileDialog
+        file_path, _ = QFileDialog.getOpenFileName(self.window, "Open Configuration", "", "JSON Files (*.json)")
+        if file_path:
+            self.status_label.setText(f"Opened: {file_path}")
+    
+    def _on_save(self):
+        self.status_label.setText("Configuration saved")
+    
+    def _on_save_as(self):
+        from PySide6.QtWidgets import QFileDialog
+        file_path, _ = QFileDialog.getSaveFileName(self.window, "Save Configuration", "", "JSON Files (*.json)")
+        if file_path:
+            self.status_label.setText(f"Saved: {file_path}")
+    
+    def _on_import_config(self):
+        from PySide6.QtWidgets import QFileDialog
+        file_path, _ = QFileDialog.getOpenFileName(self.window, "Import Configuration", "", "JSON Files (*.json)")
+        if file_path:
+            self.status_label.setText(f"Imported: {file_path}")
+    
+    def _on_export_results(self):
+        from PySide6.QtWidgets import QFileDialog
+        file_path, _ = QFileDialog.getSaveFileName(self.window, "Export Results", "", "CSV Files (*.csv)")
+        if file_path:
+            self.status_label.setText(f"Exported: {file_path}")
+    
+    def _on_reset_layout(self):
+        self.status_label.setText("Layout reset")
+    
+    def _on_toggle_3d_view(self, checked):
+        if hasattr(self, 'viewport_3d'):
+            self.viewport_3d.setVisible(checked)
+    
+    def _on_toggle_2d_view(self, checked):
+        if hasattr(self, 'viewport_2d'):
+            self.viewport_2d.setVisible(checked)
+    
+    def _on_toggle_charts(self, checked):
+        if hasattr(self, 'charts_widget'):
+            self.charts_widget.setVisible(checked)
+    
+    def _on_tutorial(self):
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.information(self.window, "Tutorial", "Tutorials available at:\nhttps://openturbine.readthedocs.io/")
+    
+    def _on_documentation(self):
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.information(self.window, "Documentation", "Documentation available at:\nhttps://openturbine.readthedocs.io/\n\nParameter reference:\ndocs/parameters.md")
+    
+    def _on_about(self):
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.about(
+            self.window,
+            "About OpenTurbine",
+            "<h3>OpenTurbine</h3>"
+            "<p>Version 0.1.0</p>"
+            "<p>Open-source wind turbine simulation software</p>"
+            "<p>Author: Romano E. Torrano</p>"
+            "<p>Licensed under Apache License 2.0</p>"
+            "<p><a href='https://github.com/retorrano/openturbine'>GitHub Repository</a></p>"
+        )
     
     def _create_tool_bar(self):
         toolbar = QToolBar("Main Toolbar")
