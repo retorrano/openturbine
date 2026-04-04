@@ -39,7 +39,7 @@ jobs:
           pip install -e .
           pyinstaller --onefile --windowed \
             --name openturbine-${{ env.VERSION }}-linux \
-            --add-data "src/openturbine/configs:openturbine/configs" \
+            --add-data "configs:openturbine/configs" \
             src/openturbine/ui/main_window.py
 
       - name: Upload artifact
@@ -78,8 +78,37 @@ jobs:
           name: openturbine-windows
           path: dist/openturbine-${{ env.VERSION }}-windows.exe
 
+  build-macos:
+    name: Build macOS Binary
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install numpy scipy matplotlib pandas pyqtgraph PySide6 vtk pyvista pyinstaller
+
+      - name: Build executable
+        run: |
+          pip install -e .
+          pyinstaller --onefile --windowed \
+            --name openturbine-${{ env.VERSION }}-macos \
+            --add-data "configs:openturbine/configs" \
+            src/openturbine/ui/main_window.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openturbine-macos
+          path: dist/openturbine-${{ env.VERSION }}-macos
+
   create-release:
-    needs: [build-linux, build-windows]
+    needs: [build-linux, build-windows, build-macos]
     permissions:
       contents: write
     steps:
@@ -98,5 +127,6 @@ jobs:
           files: |
             artifacts/openturbine-linux/openturbine-${{ env.VERSION }}-linux
             artifacts/openturbine-windows/openturbine-${{ env.VERSION }}-windows.exe
+            artifacts/openturbine-macos/openturbine-${{ env.VERSION }}-macos
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
