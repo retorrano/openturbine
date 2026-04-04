@@ -310,25 +310,79 @@ class MainWindow:
             self.status_label.setText(f"Opened: {file_path}")
     
     def _on_save(self):
-        self.status_label.setText("Configuration saved")
+        if hasattr(self, 'current_file') and self.current_file:
+            self._save_to_file(self.current_file)
+        else:
+            self._on_save_as()
     
     def _on_save_as(self):
         from PySide6.QtWidgets import QFileDialog
         file_path, _ = QFileDialog.getSaveFileName(self.window, "Save Configuration", "", "JSON Files (*.json)")
         if file_path:
+            self._save_to_file(file_path)
+            self.current_file = file_path
             self.status_label.setText(f"Saved: {file_path}")
+    
+    def _save_to_file(self, file_path):
+        try:
+            import json
+            config = {
+                "turbine": {
+                    "rotor": {
+                        "diameter": {"value": self.simulator.rotor_diameter},
+                        "number_of_blades": {"value": self.simulator.num_blades},
+                        "rated_power": {"value": self.simulator.rated_power}
+                    },
+                    "hub_height": {"value": self.simulator.hub_height}
+                },
+                "aerodynamics": {
+                    "blade_length": {"value": self.simulator.blade_length},
+                    "cut_in_wind_speed": {"value": self.simulator.cut_in_wind_speed},
+                    "rated_wind_speed": {"value": self.simulator.rated_wind_speed},
+                    "cut_out_wind_speed": {"value": self.simulator.cut_out_wind_speed},
+                    "cp_max": {"value": self.simulator.cp_max},
+                    "tsr_optimal": {"value": self.simulator.tsr_optimal}
+                },
+                "environment": {
+                    "air_density": {"value": self.simulator.air_density}
+                }
+            }
+            with open(file_path, 'w') as f:
+                json.dump(config, f, indent=2)
+        except Exception as e:
+            self.status_label.setText(f"Save error: {str(e)[:50]}")
     
     def _on_import_config(self):
         from PySide6.QtWidgets import QFileDialog
         file_path, _ = QFileDialog.getOpenFileName(self.window, "Import Configuration", "", "JSON Files (*.json)")
         if file_path:
-            self.status_label.setText(f"Imported: {file_path}")
+            try:
+                import json
+                with open(file_path, 'r') as f:
+                    config = json.load(f)
+                self.simulator.config = config
+                self.simulator._parse_config()
+                self.current_file = file_path
+                self.status_label.setText(f"Loaded: {file_path}")
+            except Exception as e:
+                self.status_label.setText(f"Import error: {str(e)[:50]}")
     
     def _on_export_results(self):
         from PySide6.QtWidgets import QFileDialog
         file_path, _ = QFileDialog.getSaveFileName(self.window, "Export Results", "", "CSV Files (*.csv)")
         if file_path:
-            self.status_label.setText(f"Exported: {file_path}")
+            try:
+                import csv
+                data = [["Wind Speed (m/s)", "Power (MW)", "RPM", "Thrust (kN)"]]
+                for ws in range(0, 26):
+                    result = self.simulator.run_steady_state(float(ws))
+                    data.append([ws, result['power_mw'], result['rotor_rpm'], result['thrust_kn']])
+                with open(file_path, 'w', newline='') as f:
+                    writer = csv.writer(f)
+                    writer.writerows(data)
+                self.status_label.setText(f"Exported: {file_path}")
+            except Exception as e:
+                self.status_label.setText(f"Export error: {str(e)[:50]}")
     
     def _on_reset_layout(self):
         self.status_label.setText("Layout reset")
@@ -392,23 +446,28 @@ class MainWindow:
         self.window.addToolBar(toolbar)
         
         new_btn = QPushButton("New")
+        new_btn.clicked.connect(self._on_new_project)
         toolbar.addWidget(new_btn)
         
         open_btn = QPushButton("Open")
+        open_btn.clicked.connect(self._on_open)
         toolbar.addWidget(open_btn)
         
         save_btn = QPushButton("Save")
+        save_btn.clicked.connect(self._on_save)
         toolbar.addWidget(save_btn)
         
         toolbar.addSeparator()
         
         self.run_btn = QPushButton("Run")
         self.run_btn.setStyleSheet("background-color: #4CAF50; color: white; padding: 5px 15px;")
+        self.run_btn.clicked.connect(self._on_run_clicked)
         toolbar.addWidget(self.run_btn)
         
         self.stop_btn = QPushButton("Stop")
         self.stop_btn.setEnabled(False)
         self.stop_btn.setStyleSheet("background-color: #f44336; color: white; padding: 5px 15px;")
+        self.stop_btn.clicked.connect(self._on_stop_clicked)
         toolbar.addWidget(self.stop_btn)
         
         toolbar.addSeparator()
