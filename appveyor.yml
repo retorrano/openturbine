@@ -1,4 +1,5 @@
 image: Visual Studio 2022
+platform: x64  # This tells AppVeyor to use a 64-bit worker
 
 # This ensures we don't use the default MSBuild logic
 build: off 
