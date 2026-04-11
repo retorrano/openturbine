@@ -10,14 +10,15 @@ install:
   
   # Now upgrade and install
   - python -m pip install --upgrade pip
-  - pip install pyinstaller numpy vtk
-  - pip install scipy matplotlib pandas
+  - pip install pybind11
+  - pip install pyinstaller numpy vtk scipy matplotlib pandas
   - pip install pyqtgraph PySide6 pyvista
 
 build_script:
   - cmd: mkdir build
   - cmd: cd build
-  - cmd: cmake .. -G "Visual Studio 17 2022" -A x64
+  - cmd: for /f "delims=" %%i in ('python -m pybind11 --cmakedir') do set PYBIND11_DIR=%%i
+  - cmd: cmake .. -G "Visual Studio 17 2022" -A x64 -Dpybind11_DIR=%PYBIND11_DIR%
   - cmd: cmake --build . --config Release
   - cmd: cd ..
 
