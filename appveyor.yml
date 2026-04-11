@@ -1,30 +1,34 @@
-image: Visual Studio 2022  # Use a modern Windows environment
-platform: x64
+image: Visual Studio 2022
+platform: x64  # This tells AppVeyor to use a 64-bit worker
 
-stack: python 3.10  # Pre-installs Python 3.10 for you
+# This ensures we don't use the default MSBuild logic
+build: off 
 
 install:
-  # Force the 64-bit version of Python
+  # Force 64-bit Python 3.12 onto the PATH
   - SET PATH=C:\Python312-x64;C:\Python312-x64\Scripts;%PATH%
   - python --version
   
-  # Now upgrade and install
-  - python -m pip install --upgrade pip
-  - pip install pybind11
-  - pip install pyinstaller numpy vtk scipy matplotlib pandas
-  - pip install pyqtgraph PySide6 pyvista
+  # Install dependencies
+  - pip install pybind11 pyinstaller numpy vtk scipy matplotlib pandas pyqtgraph PySide6 pyvista
 
 build_script:
-  - cmd: mkdir build
-  - cmd: cd build
-  - cmd: for /f "delims=" %%i in ('python -m pybind11 --cmakedir') do set PYBIND11_DIR=%%i
-  - cmd: cmake .. -G "Visual Studio 17 2022" -A x64 -Dpybind11_DIR=%PYBIND11_DIR%
-  - cmd: cmake --build . --config Release
-  - cmd: cd ..
+  - mkdir build
+  - cd build
+  # Get the pybind11 path for CMake
+  - for /f "delims=" %%i in ('python -m pybind11 --cmakedir') do set PYBIND11_DIR=%%i
+  
+  # EXPLICIT 64-BIT BUILD:
+  # -G "Visual Studio 17 2022" + -A x64 forces 64-bit compilation
+  - cmake .. -G "Visual Studio 17 2022" -A x64 -Dpybind11_DIR=%PYBIND11_DIR%
+  - cmake --build . --config Release
+  - cd ..
 
-  - cmd: pyinstaller --onefile --noconsole --name "OpenTurbine" --add-binary "build\Release\openturbine_core.dll;." src\ui\main_window.py
+  # Bundle the 64-bit binary
+  - pyinstaller --onefile --noconsole --name "OpenTurbine" ^
+      --add-binary "build\Release\openturbine_core.dll;." ^
+      src\ui\main_window.py
 
 artifacts:
-  # This tells AppVeyor to "save" the file so you can download it
   - path: dist\OpenTurbine.exe
-    name: OpenTurbine_Windows_Build
+    name: OpenTurbine_Windows_64bit
