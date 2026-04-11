@@ -1,0 +1,31 @@
+image: Visual Studio 2022  # Use a modern Windows environment
+platform: x64
+
+stack: python 3.9  # Pre-installs Python 3.9 for you
+
+install:
+  # 1. Update pip and install build tools
+  - python -m pip install --upgrade pip
+  - pip install pyinstaller numpy
+  - pip install -r requirements.txt
+  
+  # 2. Install VTK (The Windows version)
+  - pip install vtk
+
+build_script:
+  # 1. Compile your C++ Core using CMake
+  - mkdir build
+  - cd build
+  - cmake .. -G "Visual Studio 17 2022" -A x64
+  - cmake --build . --config Release
+  - cd ..
+
+  # 2. Bundle everything with PyInstaller
+  - pyinstaller --onefile --noconsole --name "OpenTurbine" ^
+      --add-binary "build\Release\openturbine_core.dll;." ^
+      src\ui\main_window.py
+
+artifacts:
+  # This tells AppVeyor to "save" the file so you can download it
+  - path: dist\OpenTurbine.exe
+    name: OpenTurbine_Windows_Build
