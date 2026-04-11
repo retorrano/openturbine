@@ -13,17 +13,13 @@ install:
   - pip install vtk
 
 build_script:
-  # 1. Compile your C++ Core using CMake
-  - mkdir build
-  - cd build
-  - cmake .. -G "Visual Studio 17 2022" -A x64
-  - cmake --build . --config Release
-  - cd ..
+  - cmd: mkdir build
+  - cmd: cd build
+  - cmd: cmake .. -G "Visual Studio 17 2022" -A x64
+  - cmd: cmake --build . --config Release
+  - cmd: cd ..
 
-  # 2. Bundle everything with PyInstaller
-  - pyinstaller --onefile --noconsole --name "OpenTurbine" ^
-      --add-binary "build\Release\openturbine_core.dll;." ^
-      src\ui\main_window.py
+  - cmd: pyinstaller --onefile --noconsole --name "OpenTurbine" --add-binary "build\Release\openturbine_core.dll;." src\ui\main_window.py
 
 artifacts:
   # This tells AppVeyor to "save" the file so you can download it
