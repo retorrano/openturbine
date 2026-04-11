@@ -112,26 +112,26 @@ def get_unit_type(unit: str) -> str:
 def convert_units(value: float, from_unit: str, to_unit: str) -> float:
     from_type = get_unit_type(from_unit)
     to_type = get_unit_type(to_unit)
-    
+
     if from_type != to_type:
         raise ValueError(f"Cannot convert between {from_type} and {to_type}")
-    
+
     if from_type == "" or to_type == "":
         raise ValueError(f"Unknown unit: {from_unit} or {to_unit}")
-    
+
     base_value = value * UNITS[from_type][from_unit]
     return base_value / UNITS[to_type][to_unit]
 
 
 def convert_to_si(value: float, unit: str) -> Tuple[float, str]:
     unit_type = get_unit_type(unit)
-    
+
     if unit_type == "":
         return value, unit
-    
+
     si_unit = list(UNITS[unit_type].keys())[0]
     si_value = value * UNITS[unit_type][unit]
-    
+
     return si_value, si_unit
 
 
@@ -152,13 +152,13 @@ def format_value(value: float, unit: str, precision: int = 3) -> str:
 
 def parse_unit_string(unit_string: str) -> Tuple[float, str]:
     import re
-    
+
     pattern = r"([+-]?\d+\.?\d*)\s*([a-zA-Z°²³·µ/]+)"
     match = re.match(pattern, unit_string.strip())
-    
+
     if match:
         value = float(match.group(1))
         unit = match.group(2)
         return value, unit
-    
+
     raise ValueError(f"Cannot parse unit string: {unit_string}")

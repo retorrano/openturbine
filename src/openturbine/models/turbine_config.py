@@ -44,32 +44,32 @@ class TurbineConfig:
     tower: TowerConfig = field(default_factory=TowerConfig)
     nacelle: NacelleConfig = field(default_factory=NacelleConfig)
     hub: HubConfig = field(default_factory=HubConfig)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "rotor": asdict(self.rotor),
             "tower": asdict(self.tower),
             "nacelle": asdict(self.nacelle),
-            "hub": asdict(self.hub)
+            "hub": asdict(self.hub),
         }
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "TurbineConfig":
         return cls(
             rotor=RotorConfig(**data.get("rotor", {})),
             tower=TowerConfig(**data.get("tower", {})),
             nacelle=NacelleConfig(**data.get("nacelle", {})),
-            hub=HubConfig(**data.get("hub", {}))
+            hub=HubConfig(**data.get("hub", {})),
         )
-    
+
     @classmethod
     def from_file(cls, filepath: str) -> "TurbineConfig":
-        with open(filepath, 'r') as f:
+        with open(filepath, "r") as f:
             data = json.load(f)
         return cls.from_dict(data)
-    
+
     def save(self, filepath: str):
-        with open(filepath, 'w') as f:
+        with open(filepath, "w") as f:
             json.dump(self.to_dict(), f, indent=2)
 
 
@@ -78,25 +78,25 @@ class AerodynamicConfig:
     blade_length: float = 61.5
     chord_distribution: List[Dict[str, float]] = field(default_factory=list)
     twist_distribution: List[Dict[str, float]] = field(default_factory=list)
-    
+
     root_airfoil: str = "cylinder"
     mid_airfoil: str = "naca63_418"
     tip_airfoil: str = "naca64_418"
-    
+
     cut_in_wind_speed: float = 3.0
     rated_wind_speed: float = 11.4
     cut_out_wind_speed: float = 25.0
-    
+
     max_tip_speed: float = 80.0
     max_rotor_rpm: float = 12.1
-    
+
     cp_max: float = 0.42
     tsr_optimal: float = 7.55
     ct_rated: float = 0.80
-    
+
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "AerodynamicConfig":
         return cls(**data)
@@ -107,20 +107,20 @@ class StructuralConfig:
     blade_density: float = 3450.0
     blade_young_modulus: float = 40.0e9
     blade_poisson_ratio: float = 0.3
-    
+
     tower_density: float = 8500.0
     tower_young_modulus: float = 210.0e9
     tower_yield_strength: float = 345.0e6
-    
+
     gearbox_ratio: float = 97.0
     generator_inertia: float = 534.116
-    
+
     safety_factor: float = 1.5
     sn_curve_slope: float = 10.0
-    
+
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "StructuralConfig":
         return cls(**data)
@@ -131,25 +131,25 @@ class ControlConfig:
     pitch_kp: float = 0.018
     pitch_ki: float = 0.002
     pitch_kd: float = 0.0
-    
+
     min_pitch_rate: float = -8.0
     max_pitch_rate: float = 8.0
     rated_pitch_angle: float = 2.0
-    
+
     yaw_enabled: bool = True
     yaw_kp: float = 0.001
     max_yaw_rate: float = 0.5
-    
+
     torque_type: str = "quadratic"
     rated_torque: float = 41000.0
     rated_rpm: float = 1173.7
-    
+
     region2_start: float = 3.0
     region2_5_start: float = 11.4
-    
+
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "ControlConfig":
         return cls(**data)
@@ -162,23 +162,23 @@ class EnvironmentConfig:
     mean_wind_speed: float = 8.0
     weibull_shape: float = 2.0
     weibull_scale: float = 9.0
-    
+
     turbulence_enabled: bool = True
     turbulence_intensity: float = 0.14
     turbulence_model: str = "kaimal"
-    
+
     wind_shear_enabled: bool = True
     shear_exponent: float = 0.14
     roughness_length: float = 0.03
-    
+
     air_density: float = 1.225
     temperature: float = 15.0
-    
+
     gust_enabled: bool = True
-    
+
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "EnvironmentConfig":
         return cls(**data)
@@ -189,18 +189,18 @@ class SimulationConfig:
     simulation_type: str = "steady_state"
     duration: float = 600.0
     time_step: float = 0.01
-    
+
     wind_sweep_enabled: bool = True
     sweep_start: float = 3.0
     sweep_end: float = 25.0
     sweep_step: float = 1.0
-    
+
     save_results: bool = True
     results_directory: str = "results"
-    
+
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "SimulationConfig":
         return cls(**data)
@@ -211,14 +211,14 @@ class ProjectConfig:
     version: str = "1.0"
     name: str = "Wind Turbine Project"
     description: str = ""
-    
+
     turbine: TurbineConfig = field(default_factory=TurbineConfig)
     aerodynamics: AerodynamicConfig = field(default_factory=AerodynamicConfig)
     structural: StructuralConfig = field(default_factory=StructuralConfig)
     control: ControlConfig = field(default_factory=ControlConfig)
     environment: EnvironmentConfig = field(default_factory=EnvironmentConfig)
     simulation: SimulationConfig = field(default_factory=SimulationConfig)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "version": self.version,
@@ -229,9 +229,9 @@ class ProjectConfig:
             "structural": self.structural.to_dict(),
             "control": self.control.to_dict(),
             "environment": self.environment.to_dict(),
-            "simulation": self.simulation.to_dict()
+            "simulation": self.simulation.to_dict(),
         }
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "ProjectConfig":
         return cls(
@@ -243,15 +243,15 @@ class ProjectConfig:
             structural=StructuralConfig.from_dict(data.get("structural", {})),
             control=ControlConfig.from_dict(data.get("control", {})),
             environment=EnvironmentConfig.from_dict(data.get("environment", {})),
-            simulation=SimulationConfig.from_dict(data.get("simulation", {}))
+            simulation=SimulationConfig.from_dict(data.get("simulation", {})),
         )
-    
+
     @classmethod
     def from_file(cls, filepath: str) -> "ProjectConfig":
-        with open(filepath, 'r') as f:
+        with open(filepath, "r") as f:
             data = json.load(f)
         return cls.from_dict(data)
-    
+
     def save(self, filepath: str):
-        with open(filepath, 'w') as f:
+        with open(filepath, "w") as f:
             json.dump(self.to_dict(), f, indent=2)
