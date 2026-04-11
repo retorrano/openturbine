@@ -1,6 +1,5 @@
 image: Visual Studio 2022  # Use a modern Windows environment
 platform: x64
-build_mode: script
 
 stack: python 3.10  # Pre-installs Python 3.10 for you
 
