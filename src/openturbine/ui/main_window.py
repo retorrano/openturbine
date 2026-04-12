@@ -1,3 +1,5 @@
+from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, 
+                               QPushButton, QLabel, QFileDialog)
 import sys
 import math
 from typing import Optional, Dict, Tuple, Any
