@@ -9,11 +9,12 @@ install:
   - pip install pybind11 pyinstaller numpy vtk scipy matplotlib pandas pyqtgraph PySide6 pyvista
   - curl -L https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip -o eigen.zip
   - 7z x eigen.zip -y > nul
-  - dir eigen-* /b > eigen_folder.txt
-  - powershell -Command "$folder = Get-Content eigen_folder.txt; $env:EIGEN_ROOT = Join-Path $PWD.Path $folder.Trim(); Write-Host \"EIGEN_ROOT=$env:EIGEN_ROOT\""
+  - dir eigen-* /b /ad > eigen_folder.txt
+  - for /f "delims=" %%i in (eigen_folder.txt) do set EIGEN_ROOT=%CD%\%%i
+  - echo EIGEN_ROOT=%EIGEN_ROOT%
   - mkdir build
   - cd build
-  - cmake .. -G "Visual Studio 17 2022" -A x64 -Dpybind11_DIR=C:\Python312-x64\Lib\site-packages\pybind11\share\cmake\pybind11 -DPython3_EXECUTABLE=C:\Python312-x64\python.exe -DEIGEN3_INCLUDE_DIR=%EIGEN_ROOT%
+  - cmake .. -G "Visual Studio 17 2022" -A x64 -Dpybind11_DIR=C:\Python312-x64\Lib\site-packages\pybind11\share\cmake\pybind11 -DPython3_EXECUTABLE=C:\Python312-x64\python.exe -DEIGEN3_INCLUDE_DIR="%EIGEN_ROOT%"
   - cmake --build . --config Release
   - cd ..
   - pyinstaller --onefile --noconsole --name "OpenTurbine" --add-binary "build\bin\Release\openturbine_core.dll;." src\ui\main_window.py
