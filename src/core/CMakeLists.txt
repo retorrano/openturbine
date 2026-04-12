@@ -5,7 +5,6 @@ add_library(openturbine_core STATIC
     structural/beam_solver.cpp
     structural/fatigue.cpp
     control/pid_controller.cpp
-    control/pitch_controller.cpp
     environmental/wind_field.cpp
     environmental/turbulence.cpp
     core_types.cpp
