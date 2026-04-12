@@ -38,7 +38,7 @@ public:
     std::vector<double> solve_moment();
     std::vector<double> solve_shear();
     
-    ModalResult calculate_first_mode();
+    ModalResult calculate_first_mode() const;
     std::vector<ModalResult> calculate_modes(int num_modes);
     
     double get_max_deflection() const;
