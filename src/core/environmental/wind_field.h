@@ -68,6 +68,7 @@ private:
     double turbulence_intensity_ = 0.14;
     double length_scale_ = 340.2;
     int seed_ = 42;
+    std::string turbulence_model_ = "kaimal";
     
     std::vector<double> time_series_;
     std::vector<double> times_;

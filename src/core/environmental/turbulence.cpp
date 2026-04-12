@@ -56,11 +56,9 @@ double TurbulenceModel::von_karman(double f) {
     return 4.0 * f / std::pow(1.0 + 70.8 * f * f, 5.0 / 6.0);
 }
 
-double TurbulenceModel::iec_coherence(double f, double delta) {
-    if (decay_coefficient_ <= 0.0) {
-        return 1.0;
-    }
-    return std::exp(-decay_coefficient_ * f * delta);
+double TurbulenceModel::iec_coherence(double /*f*/, double /*delta*/) {
+    // IEC coherence implementation placeholder
+    return 1.0;
 }
 
 WindCoherence::WindCoherence() {
@@ -75,10 +73,8 @@ void WindCoherence::set_decay_coefficient(double c) {
 }
 
 double WindCoherence::compute_coherence(double f, double delta) {
-    if (coherence_model_ == "exponential") {
+    if (coherence_model_ == "exponential" || coherence_model_ == "ieee") {
         return std::exp(-decay_coefficient_ * delta);
-    } else if (coherence_model_ == "ieee") {
-        return iec_coherence(f, delta);
     }
     return 1.0;
 }
