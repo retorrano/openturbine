@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
 project(OpenTurbine VERSION 1.0.0 LANGUAGES CXX)
 
-# Define M_PI if not defined (needed for Windows MSVC)
-if(WIN32)
-    add_compile_definitions(M_PI=3.14159265358979323846)
+# Fix M_PI for Windows MSVC
+if(MSVC)
+    add_compile_definitions(_USE_MATH_DEFINES)
 endif()
 
 set(CMAKE_CXX_STANDARD 17)
