@@ -165,7 +165,7 @@ std::vector<double> BeamSolver::solve_shear() {
     return shear;
 }
 
-ModalResult BeamSolver::calculate_first_mode() {
+ModalResult BeamSolver::calculate_first_mode() const {
     ModalResult result;
     
     double EI = young_modulus_ * moment_of_inertia_;
