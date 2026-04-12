@@ -18,7 +18,7 @@ install:
   - cmake --build . --config Release
   - cd ..
   - pip install .
-  - pyinstaller --onefile --noconsole --name "OpenTurbine" --add-binary "build\bin\Release\openturbine_core.dll;." src\openturbine\ui\main_window.py
+  - pyinstaller --onefile --noconsole --name "OpenTurbine" --add-binary "build\bin\Release\openturbine_core.dll;." --add-data "configs;configs" src\openturbine\ui\main_window.py
 
 artifacts:
   - path: dist\OpenTurbine.exe
