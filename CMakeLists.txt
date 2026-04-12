@@ -20,6 +20,11 @@ option(BUILD_PYTHON_BINDINGS "Build Python bindings" ON)
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 find_package(Threads REQUIRED)
 
+# Add Eigen include directory if specified
+if(EIGEN3_INCLUDE_DIR)
+    include_directories(${EIGEN3_INCLUDE_DIR})
+endif()
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/core
     ${CMAKE_BINARY_DIR}/include

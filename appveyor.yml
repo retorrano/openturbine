@@ -1,37 +1,20 @@
 image: Visual Studio 2022
-platform: x64  # This tells AppVeyor to use a 64-bit worker
+platform: x64
 
-# This ensures we don't use the default MSBuild logic
-build: off 
+build: off
 
 install:
-  # Force 64-bit Python 3.12 onto the PATH
   - SET PATH=C:\Python312-x64;C:\Python312-x64\Scripts;%PATH%
   - python --version
-  
-  # Install dependencies
   - pip install pybind11 pyinstaller numpy vtk scipy matplotlib pandas pyqtgraph PySide6 pyvista
-  
-  # Download Eigen (header-only math library)
   - curl -L https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip -o eigen.zip
   - 7z x eigen.zip -y > nul
-  - set EIGEN_ROOT=%CD%\eigen-3.4.0
-
-build_script:
   - mkdir build
   - cd build
-  # Use explicit pybind11 path and Python 3.12
-  - cmake .. -G "Visual Studio 17 2022" -A x64 ^
-      -Dpybind11_DIR=C:\Python312-x64\Lib\site-packages\pybind11\share\cmake\pybind11 ^
-      -DPython3_EXECUTABLE=C:\Python312-x64\python.exe ^
-      -DEIGEN3_INCLUDE_DIR=%EIGEN_ROOT%
+  - cmake .. -G "Visual Studio 17 2022" -A x64 -Dpybind11_DIR=C:\Python312-x64\Lib\site-packages\pybind11\share\cmake\pybind11 -DPython3_EXECUTABLE=C:\Python312-x64\python.exe -DEIGEN3_INCLUDE_DIR=C:\projects\openturbine-yshim\eigen-3.4.0
   - cmake --build . --config Release
   - cd ..
-
-  # Bundle the 64-bit binary
-  - pyinstaller --onefile --noconsole --name "OpenTurbine" ^
-      --add-binary "build\Release\openturbine_core.dll;." ^
-      src\ui\main_window.py
+  - pyinstaller --onefile --noconsole --name "OpenTurbine" --add-binary "build\Release\openturbine_core.dll;." src\ui\main_window.py
 
 artifacts:
   - path: dist\OpenTurbine.exe
