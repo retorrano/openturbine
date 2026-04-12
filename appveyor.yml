@@ -11,6 +11,11 @@ install:
   
   # Install dependencies
   - pip install pybind11 pyinstaller numpy vtk scipy matplotlib pandas pyqtgraph PySide6 pyvista
+  
+  # Download Eigen (header-only math library)
+  - curl -L https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip -o eigen.zip
+  - 7z x eigen.zip -y > nul
+  - set EIGEN_ROOT=%CD%\eigen-3.4.0
 
 build_script:
   - mkdir build
@@ -18,7 +23,8 @@ build_script:
   # Use explicit pybind11 path and Python 3.12
   - cmake .. -G "Visual Studio 17 2022" -A x64 ^
       -Dpybind11_DIR=C:\Python312-x64\Lib\site-packages\pybind11\share\cmake\pybind11 ^
-      -DPython3_EXECUTABLE=C:\Python312-x64\python.exe
+      -DPython3_EXECUTABLE=C:\Python312-x64\python.exe ^
+      -DEIGEN3_INCLUDE_DIR=%EIGEN_ROOT%
   - cmake --build . --config Release
   - cd ..
 
