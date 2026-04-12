@@ -1,6 +1,11 @@
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 find_package(pybind11 REQUIRED)
 
+# Add Eigen include directory if specified
+if(EIGEN3_INCLUDE_DIR)
+    include_directories(${EIGEN3_INCLUDE_DIR})
+endif()
+
 pybind11_add_module(openturbine_pybind
     pybind_aerodynamics.cpp
     pybind_structural.cpp
