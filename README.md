@@ -44,7 +44,7 @@ openturbine/
 For the latest pre-release **v0.1.0**:
 - 🪟 **[Windows Binary (.exe)](https://github.com/retorrano/openturbine/releases/download/v0.1.0/openturbine_gui.exe)**
 - 🐧 **[Linux Binary](https://github.com/retorrano/openturbine/releases/download/v0.1.0/openturbine_gui_linux)**
-- 🌐 **[WebAssembly (Browser/Chrome)](https://github.com/retorrano/openturbine/releases/download/v0.1.0/openturbine_web_v0.1.0.tar.gz)**
+- 🌐 **[WebAssembly (Browser/Chrome)](https://github.com/retorrano/openturbine/releases/download/v0.1.0/openturbine_web_v0.1.0.zip)**
 
 ### Running the Simulation
 
