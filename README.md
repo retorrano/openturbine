@@ -47,22 +47,22 @@ To launch the interactive 3D GUI locally:
 cargo run --release -p openturbine_gui
 ```
 
-### Multi-Platform Builds
+### Multi-Platform Manual Builds
 
-This project is configured with GitHub Actions to build automatically for:
-- **Windows**: `.exe` binary.
-- **macOS**: Apple Silicon (M1/M2/M3) native binary.
-- **Web (Chrome/Browser)**: WebAssembly (WASM) build.
+You can manually build the project for different platforms:
 
-You can find these builds under the **Actions** tab in the GitHub repository for every push to `master`.
+#### Windows (Cross-compile from Linux)
+```bash
+cargo zigbuild --release --target x86_64-pc-windows-gnu -p openturbine_gui
+```
 
-#### Manual Web Build
-To build for the browser manually, you will need `wasm-bindgen-cli`:
+#### Web (Chrome/Browser)
+Requires `wasm-bindgen-cli`:
 ```bash
 cargo build --release --target wasm32-unknown-unknown -p openturbine_gui
 wasm-bindgen --out-dir ./out --target web target/wasm32-unknown-unknown/release/openturbine_gui.wasm
 ```
-Then serve the `./out` directory with any static file server.
+Serve the `./out` directory with any static file server.
 
 ## Parameter Configuration
 
