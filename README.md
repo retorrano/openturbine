@@ -29,6 +29,8 @@ openturbine/
 └── archive/          # Legacy Python/C++ implementation (v0.1)
 ```
 
+> **Note**: For those interested in the original Python and C++ implementation, the code has been preserved in the `archive/python_v0.1/` directory.
+
 ## Getting Started
 
 ### Prerequisites
