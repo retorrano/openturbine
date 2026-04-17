@@ -55,6 +55,12 @@ The GUI provides four tabs for comprehensive turbine design:
 3. **Control**: Pitch control logic (rated/max angles, PI gains).
 4. **Presets**: Technical camera view switching.
 
+## Author
+
+**Romano E. Torrano**
+- Email: [romano.torrano@gmail.com](mailto:romano.torrano@gmail.com)
+- Facebook: [fb.com/retorrano](https://fb.com/retorrano)
+
 ## License
 
 This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
