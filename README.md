@@ -39,6 +39,13 @@ openturbine/
   sudo dnf install -y alsa-lib-devel systemd-devel libX11-devel libXcursor-devel libXrandr-devel libXi-devel vulkan-loader-devel mesa-libGL-devel libxkbcommon-devel
   ```
 
+### Downloads
+
+For the latest pre-release **v0.1.0**:
+- 🪟 **[Windows Binary (.exe)](https://github.com/retorrano/openturbine/releases/download/v0.1.0/openturbine_gui.exe)**
+- 🐧 **[Linux Binary](https://github.com/retorrano/openturbine/releases/download/v0.1.0/openturbine_gui_linux)**
+- 🌐 **[WebAssembly (Browser/Chrome)](https://github.com/retorrano/openturbine/releases/download/v0.1.0/openturbine_web_v0.1.0.tar.gz)**
+
 ### Running the Simulation
 
 To launch the interactive 3D GUI locally:
