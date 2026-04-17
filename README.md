@@ -71,6 +71,14 @@ wasm-bindgen --out-dir ./out --target web target/wasm32-unknown-unknown/release/
 ```
 Serve the `./out` directory with any static file server.
 
+### How to run the WebAssembly version locally
+
+1. **Download and Extract**: Download the `openturbine_web_v0.1.0.zip` from the links above and extract it.
+2. **Serve the files**: Browsers block WASM on `file://` protocols. You must serve it via a local web server:
+   - **Using Python**: `python3 -m http.server 8080` (Run inside the extracted folder)
+   - **Using Node.js**: `npx serve`
+3. **Open Browser**: Navigate to `http://localhost:8080` in Chrome or any modern browser.
+
 ## Parameter Configuration
 
 The GUI provides four tabs for comprehensive turbine design:
