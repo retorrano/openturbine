@@ -90,6 +90,26 @@ The GUI provides four tabs for comprehensive turbine design:
 3. **Control**: Pitch control logic (rated/max angles, PI gains).
 4. **Presets**: Technical camera view switching.
 
+## Contributing
+
+Contributions are welcome! Here's how you can help:
+
+### Ways to Contribute
+- **Report Bugs**: Open an issue with a clear description and steps to reproduce
+- **Suggest Features**: Open an issue with your feature idea
+- **Submit Pull Requests**: 
+  1. Fork the repository
+  2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+  3. Make your changes and test thoroughly
+  4. Commit with clear messages (`git commit -m 'Add amazing feature'`)
+  5. Push to your branch (`git push origin feature/amazing-feature`)
+  6. Open a Pull Request
+
+### Development Tips
+- Run tests: `cargo test --workspace`
+- Check code formatting: `cargo fmt --check`
+- Run lints: `cargo clippy --workspace`
+
 ## Author
 
 **Romano E. Torrano**
