@@ -96,6 +96,27 @@ The GUI provides four tabs for comprehensive turbine design:
 - Email: [romano.torrano@gmail.com](mailto:romano.torrano@gmail.com)
 - Facebook: [fb.com/retorrano](https://fb.com/retorrano)
 
+## Citation
+
+If you use OpenTurbine in your research, please cite it as follows:
+
+```
+Romano E. Torrano. (2026). OpenTurbine (Version 0.1.0) [Computer software]. 
+Retrieved from https://github.com/retorrano/openturbine
+```
+
+For BibTeX:
+```bibtex
+@misc{openturbine2026,
+  author = {Romano E. Torrano},
+  title = {OpenTurbine},
+  year = {2026},
+  version = {0.1.0},
+  url = {https://github.com/retorrano/openturbine},
+  note = {Open-source wind turbine simulation software}
+}
+```
+
 ## License
 
 This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
