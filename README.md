@@ -110,6 +110,34 @@ Contributions are welcome! Here's how you can help:
 - Check code formatting: `cargo fmt --check`
 - Run lints: `cargo clippy --workspace`
 
+## Roadmap
+
+### Planned Features
+
+#### v0.2.0 - Enhanced Physics
+- [ ] Aerodynamic drag modeling
+- [ ] Blade pitch optimization
+- [ ] Wind shear effects
+- [ ] Wake modeling for wind farms
+
+#### v0.3.0 - Advanced GUI
+- [ ] Multi-turbine visualization
+- [ ] Wind field animation
+- [ ] Export simulation data (CSV/JSON)
+- [ ] Parameter sensitivity analysis
+
+#### v0.4.0 - Cloud & HPC
+- [ ] Cloud simulation API
+- [ ] Batch processing support
+- [ ] GPU acceleration (compute shaders)
+- [ ] Parameter optimization suite
+
+#### Future Goals
+- [ ] OpenFAST integration
+- [ ] IEC 61400 certification standards compliance
+- [ ] Plugin system for custom blade profiles
+- [ ] AI-assisted design optimization
+
 ## Author
 
 **Romano E. Torrano**
