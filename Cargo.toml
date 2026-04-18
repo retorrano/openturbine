@@ -4,3 +4,7 @@ members = [
     "gui",
 ]
 resolver = "2"
+
+[workspace.dependencies]
+getrandom = { version = "0.3", features = ["wasm_js"] }
+uuid = { version = "1.0", features = ["v4", "js"] }
