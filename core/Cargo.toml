@@ -1,6 +1,6 @@
 [package]
 name = "openturbine_rs"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 description = "Open-source wind turbine simulation software for design verification and analysis"
 authors = ["Romano E. Torrano"]

@@ -43,15 +43,15 @@ openturbine/
 
 ### Downloads
 
-For the latest release **v0.1.1**:
+For the latest release **v0.1.2**:
 
 #### Desktop Applications (GUI)
 
 | Platform | Download | Size |
-|----------|---------|------|
-| macOS x86_64 | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/openturbine_gui-0.1.1-macos-x86_64)** | 54 MB |
-| Windows x86_64 | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/openturbine_gui-0.1.1-windows-x86_64.exe)** | 102 MB |
-| Linux x86_64 | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/openturbine_gui-0.1.1-linux-x86_64)** | 80 MB |
+|----------|----------|------|
+| macOS x86_64 | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.2/openturbine_gui-0.1.2-macos-x86_64)** | 54 MB |
+| Windows x86_64 | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.2/openturbine_gui-0.1.2-windows-x86_64.exe)** | 102 MB |
+| Linux x86_64 | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.2/openturbine_gui-0.1.2-linux-x86_64)** | 80 MB |
 
 #### WebAssembly (Browser) - Complete Package
 
@@ -59,8 +59,8 @@ Contains: `index.html`, `openturbine_gui.js`, `openturbine_gui_bg.wasm`, and all
 
 | Format | Download | Size |
 |--------|----------|------|
-| ZIP | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/openturbine_gui-0.1.1-wasm.zip)** | 23 MB |
-| TAR.GZ | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/openturbine_gui-0.1.1-wasm.tar.gz)** | 23 MB |
+| ZIP | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.2/openturbine_gui-0.1.2-wasm.zip)** | 10 MB |
+| TAR.GZ | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.2/openturbine_gui-0.1.2-wasm.tar.gz)** | 10 MB |
 
 #### WASM Host Server (All Platforms) - Complete Package
 
@@ -68,8 +68,8 @@ Contains: `wasm_host` binaries for Linux, macOS, Windows, and WASM, plus web fil
 
 | Format | Download | Size |
 |--------|----------|------|
-| ZIP | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/wasm_host-0.1.1-all.zip)** | 11 MB |
-| TAR.GZ | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/wasm_host-0.1.1-all.tar.gz)** | 11 MB |
+| ZIP | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.2/wasm_host-0.1.2-all.zip)** | 11 MB |
+| TAR.GZ | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.2/wasm_host-0.1.2-all.tar.gz)** | 11 MB |
 
 Contains: `wasm_host-0.1.1-linux-x86_64`, `wasm_host-0.1.1-macos-x86_64`, `wasm_host-0.1.1-windows-x86_64.exe`, `wasm_host-0.1.1-wasm.wasm`
 
@@ -100,7 +100,7 @@ Serve the `./out` directory with any static file server.
 
 ### How to run the WebAssembly version locally
 
-1. **Download and Extract**: Download the `openturbine_gui-0.1.1-wasm.zip` or `openturbine_gui-0.1.1-wasm.tar.gz` from the links above.
+1. **Download and Extract**: Download the `openturbine_gui-0.1.2-wasm.zip` or `openturbine_gui-0.1.2-wasm.tar.gz` from the links above.
 2. **Serve the files**: Browsers block WASM on `file://` protocols. You must serve it via a local web server:
    - **Using Python**: `python3 -m http.server 8080` (Run inside the extracted folder)
    - **Using Node.js**: `npx serve`
@@ -173,7 +173,7 @@ Contributions are welcome! Here's how you can help:
 If you use OpenTurbine in your research, please cite it as follows:
 
 ```
-Romano E. Torrano. (2026). OpenTurbine (Version 0.1.1) [Computer software].
+Romano E. Torrano. (2026). OpenTurbine (Version 0.1.2) [Computer software].
 Retrieved from https://github.com/retorrano/openturbine
 ```
 
@@ -183,7 +183,7 @@ For BibTeX:
   author = {Romano E. Torrano},
   title = {OpenTurbine},
   year = {2026},
-  version = {0.1.1},
+  version = {0.1.2},
   url = {https://github.com/retorrano/openturbine},
   note = {Open-source wind turbine simulation software}
 }

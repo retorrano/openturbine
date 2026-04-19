@@ -3757,13 +3757,16 @@ checksum = "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50"
 
 [[package]]
 name = "openturbine_gui"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "bevy",
  "bevy_egui",
+ "console_error_panic_hook",
+ "console_log",
  "egui_plot",
  "getrandom 0.3.4",
  "image 0.24.9",
+ "log",
  "openturbine_rs",
  "plotters",
  "png 0.17.16",
@@ -3772,11 +3775,12 @@ dependencies = [
  "serde",
  "serde_json",
  "uuid",
+ "wasm-bindgen",
 ]
 
 [[package]]
 name = "openturbine_rs"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "serde",
  "serde_json",
@@ -5268,7 +5272,7 @@ dependencies = [
 
 [[package]]
 name = "wasm_host"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "tiny_http",
 ]
