@@ -1,0 +1,16 @@
+# macOS cross-compilation settings
+[target.x86_64-apple-darwin]
+linker = "/home/mano/osxcross/bin/x86_64-apple-darwin24.2-clang"
+ar = "/home/mano/osxcross/bin/x86_64-apple-darwin24.2-ar"
+
+[target.aarch64-apple-darwin]
+linker = "aarch64-apple-darwin24.2-clang"
+ar = "aarch64-apple-darwin24.2-ar"
+
+[env]
+CROSS_COMPILE_x86_64_APPLE_DARWIN = "/home/mano/osxcross/bin/x86_64-apple-darwin24.2-"
+
+# Note: Global environment variables like CC/CXX are disabled here
+# because they interfere with native Linux builds.
+# To cross-compile for macOS, set them in your shell:
+# CC=x86_64-apple-darwin24.2-clang CXX=x86_64-apple-darwin24.2-clang++ cargo build --target x86_64-apple-darwin

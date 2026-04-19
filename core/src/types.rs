@@ -38,7 +38,7 @@ impl Default for AerodynamicConfig {
             blade_length: 61.5,
             cut_in_wind_speed: 3.0,
             rated_wind_speed: 11.4,
-            cut_out_wind_speed: 25.0,
+            cut_out_wind_speed: 30.0,
             cp_max: 0.42,
             tsr_optimal: 7.55,
             max_rotor_rpm: 12.1,
@@ -118,7 +118,7 @@ impl Default for SimulationConfig {
         Self {
             time_step: 0.01,
             sweep_start: 3.0,
-            sweep_end: 25.0,
+            sweep_end: 30.0,
             sweep_step: 1.0,
         }
     }

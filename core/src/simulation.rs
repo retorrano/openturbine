@@ -38,29 +38,48 @@ impl WindTurbineSimulation {
             return 0.0;
         }
 
+        // Blade count efficiency factor (simplified model)
+        // 3 blades is considered optimal for large horizontal axis turbines.
+        // Fewer blades usually suffer from lower solidity, more suffer from wake interference.
+        let blade_factor = match self.turbine_config.num_blades {
+            1 => 0.65, // Significant tip losses and imbalance (theoretical)
+            2 => 0.92, // Common for some smaller or older designs
+            3 => 1.0,  // Standard reference
+            4 => 0.96, // Increased wake interference
+            5 => 0.92, // Further interference
+            _ => 0.85,
+        };
+
         let pitch_rad = pitch * PI / 180.0;
         let mut cp = 0.22 * (116.0 / (tsr + 0.08 * pitch_rad) - 0.4 * pitch_rad - 5.0);
         
+        cp *= blade_factor;
+
         if cp < 0.0 {
             cp = 0.0;
-        } else if cp > self.aero_config.cp_max {
-            cp = self.aero_config.cp_max;
+        } else if cp > self.aero_config.cp_max * blade_factor {
+            cp = self.aero_config.cp_max * blade_factor;
         }
         
         cp
     }
 
     pub fn calculate_thrust_coefficient(&self, tsr: f64, _pitch: f64) -> f64 {
-        if tsr <= 0.0 || tsr >= 15.0 {
+        if tsr <= 0.0 || tsr >= 25.0 { // Increased range
             return 0.0;
         }
 
-        let mut ct = 4.0 * (1.0 - 0.09 * tsr) / (tsr + 1.0);
+        // Thrust increases with solidity (more blades)
+        let solidity_factor = 0.8 + (self.turbine_config.num_blades as f64 * 0.066);
+        
+        // More robust CT formula that doesn't drop to zero as fast
+        let mut ct = 4.0 * tsr / (tsr.powi(2) + 5.0) + 0.1;
+        ct *= solidity_factor;
         
         if ct < 0.0 {
             ct = 0.0;
-        } else if ct > 1.0 {
-            ct = 1.0;
+        } else if ct > 1.4 { 
+            ct = 1.4;
         }
         
         ct
@@ -85,29 +104,45 @@ impl WindTurbineSimulation {
             };
         }
 
-        let rotor_radius = self.turbine_config.rotor_diameter / 2.0;
-        let swept_area = PI * rotor_radius * rotor_radius;
+        // Cone angle reduces effective swept area
+        let cone_rad = self.turbine_config.cone_angle * PI / 180.0;
+        let effective_radius = (self.turbine_config.rotor_diameter / 2.0) * cone_rad.cos();
+        let swept_area = PI * effective_radius * effective_radius;
         
-        let pitch = self.control_config.rated_pitch_angle;
-        
+        let mut pitch = self.control_config.rated_pitch_angle;
         let mut tsr = self.aero_config.tsr_optimal;
+
+        // Above rated wind speed, increase pitch and reduce TSR to maintain rated power
         if wind_speed > self.aero_config.rated_wind_speed {
-            tsr = (self.aero_config.max_rotor_rpm * 2.0 * PI / 60.0) * rotor_radius / wind_speed;
+            let overspeed_ratio = wind_speed / self.aero_config.rated_wind_speed;
+            pitch += (overspeed_ratio - 1.0) * 15.0; // Simple pitch controller
+            if pitch > self.control_config.max_pitch_angle {
+                pitch = self.control_config.max_pitch_angle;
+            }
+            // Limit TSR to maintain max RPM
+            tsr = (self.aero_config.max_rotor_rpm * 2.0 * PI / 60.0) * effective_radius / wind_speed;
         }
         
-        let tip_speed = wind_speed * tsr;
-        let rotor_rpm = tip_speed / (2.0 * PI * rotor_radius) * 60.0;
-        
-        let ct = self.calculate_thrust_coefficient(tsr, pitch);
-        let thrust_force = 0.5 * self.env_config.air_density * swept_area * ct * wind_speed * wind_speed;
+        let rotor_rpm = (wind_speed * tsr / effective_radius) * (60.0 / (2.0 * PI));
         
         let cp = self.calculate_power_coefficient(tsr, pitch);
-        let mut power_output = 0.5 * self.env_config.air_density * swept_area * cp * wind_speed.powi(3);
+        let ct = self.calculate_thrust_coefficient(tsr, pitch);
+
+        // Environmental and control penalties
+        let turbulence_penalty = 1.0 - (self.env_config.turbulence_intensity * 0.05).clamp(0.0, 0.1);
+        let shear_penalty = 1.0 - (self.env_config.shear_exponent * 0.02).clamp(0.0, 0.05);
+        let yaw_penalty = if self.control_config.yaw_enabled { 1.0 } else { 0.95 };
+        
+        let efficiency_modifier = turbulence_penalty * shear_penalty * yaw_penalty;
+        
+        let mut power_output = 0.5 * self.env_config.air_density * swept_area * cp * wind_speed.powi(3) * efficiency_modifier;
         if power_output > self.turbine_config.rated_power {
             power_output = self.turbine_config.rated_power;
         }
         
-        let aerodynamic_efficiency = cp / 0.59;
+        let thrust_force = 0.5 * self.env_config.air_density * swept_area * ct * wind_speed * wind_speed * efficiency_modifier;
+        
+        let aerodynamic_efficiency = (cp * efficiency_modifier) / 0.59;
 
         SimulationResult {
             wind_speed,

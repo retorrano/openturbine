@@ -1,15 +1,23 @@
 [package]
 name = "openturbine_gui"
-version = "0.1.0"
-edition = "2021"
+version = "0.1.1"
+edition = "2024"
 
 [dependencies]
 bevy = "0.14"
-bevy_egui = { version = "0.28", default-features = false, features = ["render", "open_url"] }
+bevy_egui = { version = "0.28", default-features = false, features = ["default_fonts", "render", "open_url"] }
 egui_plot = "0.28"
+getrandom = { version = "0.3", features = ["wasm_js"] }
+uuid = { version = "1.0", features = ["v4", "js"] }
 openturbine_rs = { path = "../core" }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+rfd = "0.15"
+printpdf = { version = "0.7", features = ["image"] }
+plotters = { version = "0.3", default-features = false, features = ["bitmap_encoder", "bitmap_backend", "line_series", "area_series", "ttf"] }
+image = { version = "=0.24.9", features = ["png"] }
+png = "0.17"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-rand = "0.8"
-getrandom = { workspace = true }
-uuid = { workspace = true }
+getrandom = { version = "0.3", features = ["wasm_js"] }
+uuid = { version = "1.0", features = ["v4", "js"] }
