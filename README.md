@@ -71,7 +71,7 @@ Contains: `wasm_host` binaries for Linux, macOS, Windows, and WASM, plus web fil
 | ZIP | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.2/wasm_host-0.1.2-all.zip)** | 11 MB |
 | TAR.GZ | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.2/wasm_host-0.1.2-all.tar.gz)** | 11 MB |
 
-Contains: `wasm_host-0.1.1-linux-x86_64`, `wasm_host-0.1.1-macos-x86_64`, `wasm_host-0.1.1-windows-x86_64.exe`, `wasm_host-0.1.1-wasm.wasm`
+Contains: `wasm_host-0.1.2-linux-x86_64`, `wasm_host-0.1.2-macos-x86_64`, `wasm_host-0.1.2-windows-x86_64.exe`, `wasm_host-0.1.2-wasm.wasm`
 
 ### Running the Simulation
 
@@ -101,8 +101,11 @@ Serve the `./out` directory with any static file server.
 ### How to run the WebAssembly version locally
 
 1. **Download and Extract**: Download the `openturbine_gui-0.1.2-wasm.zip` or `openturbine_gui-0.1.2-wasm.tar.gz` from the links above.
-2. **Serve the files**: Browsers block WASM on `file://` protocols. You must serve it via a local web server:
-   - **Using Python**: `python3 -m http.server 8080` (Run inside the extracted folder)
+2. **Serve the files**: Use the included `wasm_host` binary (no Python needed):
+   - **Linux/macOS**: `./wasm_host-0.1.2-linux-x86_64` or `./wasm_host-0.1.2-macos-x86_64`
+   - **Windows**: `wasm_host-0.1.2-windows-x86_64.exe`
+   Or use any static file server:
+   - **Using Python**: `python3 -m http.server 8080`
    - **Using Node.js**: `npx serve`
 3. **Open Browser**: Navigate to `http://localhost:8080` in Chrome or any modern browser.
 
