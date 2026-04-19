@@ -53,19 +53,23 @@ For the latest release **v0.1.1**:
 | Windows x86_64 | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/openturbine_gui-0.1.1-windows-x86_64.exe)** | 102 MB |
 | Linux x86_64 | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/openturbine_gui-0.1.1-linux-x86_64)** | 80 MB |
 
-#### WebAssembly (Browser)
+#### WebAssembly (Browser) - Complete Package
+
+Contains: `index.html`, `openturbine_gui.js`, `openturbine_gui_bg.wasm`, and all `wasm_host` server binaries for Linux, macOS, Windows, and WASM.
 
 | Format | Download | Size |
 |--------|----------|------|
-| ZIP | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/openturbine_gui-0.1.1-wasm.zip)** | 10 MB |
-| TAR.GZ | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/openturbine_gui-0.1.1-wasm.tar.gz)** | 10 MB |
+| ZIP | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/openturbine_gui-0.1.1-wasm.zip)** | 23 MB |
+| TAR.GZ | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/openturbine_gui-0.1.1-wasm.tar.gz)** | 23 MB |
 
-#### WASM Host Server (All Platforms)
+#### WASM Host Server (All Platforms) - Complete Package
+
+Contains: `wasm_host` binaries for Linux, macOS, Windows, and WASM, plus web files (`index.html`, `openturbine_gui.js`, `openturbine_gui_bg.wasm`).
 
 | Format | Download | Size |
 |--------|----------|------|
-| ZIP | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/wasm_host-0.1.1-all.zip)** | 1.4 MB |
-| TAR.GZ | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/wasm_host-0.1.1-all.tar.gz)** | 1.4 MB |
+| ZIP | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/wasm_host-0.1.1-all.zip)** | 11 MB |
+| TAR.GZ | **[Download](https://github.com/retorrano/openturbine/releases/download/v0.1.1/wasm_host-0.1.1-all.tar.gz)** | 11 MB |
 
 Contains: `wasm_host-0.1.1-linux-x86_64`, `wasm_host-0.1.1-macos-x86_64`, `wasm_host-0.1.1-windows-x86_64.exe`, `wasm_host-0.1.1-wasm.wasm`
 
